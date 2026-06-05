@@ -1,305 +1,424 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f3efe6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16140f" media="(prefers-color-scheme: dark)">
 <title>Paladi Shanthan Kumar — Data Engineer</title>
-<meta name="description" content="Data Engineer specialising in scalable ETL pipelines on Microsoft Azure, Fabric, Databricks and PySpark." />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<meta name="description" content="Data Engineer building scalable ETL pipelines on Microsoft Azure, Fabric, Databricks and PySpark.">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#0a0e12;
-    --bg-soft:#10161c;
-    --panel:#121a21;
-    --line:#1f2a33;
-    --ink:#e7eef3;
-    --muted:#8a9ba8;
-    --faint:#5d6f7c;
-    --accent:#34e0c4;
-    --accent-dim:#1c8f7e;
-    --glow:rgba(52,224,196,.14);
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'IBM Plex Sans',sans-serif;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-    overflow-x:hidden;
-  }
-  /* blueprint grid + glow backdrop */
-  body::before{
-    content:"";position:fixed;inset:0;z-index:-2;
-    background-image:
-      linear-gradient(var(--line) 1px,transparent 1px),
-      linear-gradient(90deg,var(--line) 1px,transparent 1px);
-    background-size:54px 54px;
-    opacity:.25;
-    mask-image:radial-gradient(circle at 50% 0%,#000 0%,transparent 70%);
-  }
-  body::after{
-    content:"";position:fixed;top:-20%;left:50%;transform:translateX(-50%);
-    width:80vw;height:60vh;z-index:-1;
-    background:radial-gradient(circle,var(--glow),transparent 60%);
-    filter:blur(40px);pointer-events:none;
-  }
-  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
-  a{color:inherit;text-decoration:none}
+[data-theme="light"]{
+  --paper:#f3efe6; --paper2:#ece7da; --ink:#16130d; --ink-soft:#4a4435;
+  --muted:#8c8470; --line:#16130d; --line-soft:#c9bfa9;
+  --accent:#e23b1e; --accent2:#1d6f5f; --sel:#e23b1e;
+}
+[data-theme="dark"]{
+  --paper:#16140f; --paper2:#1f1c15; --ink:#f3efe6; --ink-soft:#bdb6a3;
+  --muted:#79705c; --line:#f3efe6; --line-soft:#3a352a;
+  --accent:#ff5a36; --accent2:#43c4ac; --sel:#ff5a36;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+::selection{background:var(--sel);color:var(--paper)}
+body{
+  font-family:'Archivo',sans-serif;background:var(--paper);color:var(--ink);
+  line-height:1.55;min-height:100vh;overflow-x:hidden;
+  transition:background .35s,color .35s;
+  padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);
+  background-image:radial-gradient(var(--line-soft) 0.6px,transparent 0.6px);
+  background-size:22px 22px;
+}
+a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--accent)}
 
-  /* nav */
-  nav{
-    position:sticky;top:0;z-index:50;
-    backdrop-filter:blur(12px);
-    background:rgba(10,14,18,.7);
-    border-bottom:1px solid var(--line);
-  }
-  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
-  .logo{font-family:'IBM Plex Mono',monospace;font-size:.9rem;letter-spacing:.05em;color:var(--accent)}
-  .logo span{color:var(--faint)}
-  .nav-links{display:flex;gap:26px;font-size:.85rem;font-family:'IBM Plex Mono',monospace}
-  .nav-links a{color:var(--muted);transition:color .2s}
-  .nav-links a:hover{color:var(--accent)}
-  @media(max-width:640px){.nav-links{display:none}}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+.rule{border:0;border-top:1.5px solid var(--line);margin:0}
 
-  /* hero */
-  header{padding:120px 0 90px;position:relative}
-  .eyebrow{
-    font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--accent);
-    letter-spacing:.18em;text-transform:uppercase;margin-bottom:22px;
-    display:inline-flex;align-items:center;gap:10px;
-  }
-  .eyebrow::before{content:"";width:32px;height:1px;background:var(--accent)}
-  h1{
-    font-family:'Bricolage Grotesque',sans-serif;
-    font-weight:800;line-height:.98;letter-spacing:-.02em;
-    font-size:clamp(2.8rem,8vw,5.6rem);margin-bottom:24px;
-  }
-  h1 em{font-style:normal;color:var(--accent)}
-  .lede{font-size:clamp(1.05rem,2.4vw,1.3rem);color:var(--muted);max-width:620px;margin-bottom:38px}
-  .lede b{color:var(--ink);font-weight:600}
-  .cta{display:flex;flex-wrap:wrap;gap:14px}
-  .btn{
-    font-family:'IBM Plex Mono',monospace;font-size:.85rem;
-    padding:13px 22px;border-radius:8px;border:1px solid var(--line);
-    color:var(--ink);transition:all .22s;display:inline-flex;align-items:center;gap:9px;
-  }
-  .btn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
-  .btn.primary{background:var(--accent);color:#04130f;border-color:var(--accent);font-weight:500}
-  .btn.primary:hover{background:#5cf0d6;color:#04130f;box-shadow:0 8px 28px var(--glow)}
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:var(--paper);border-bottom:1.5px solid var(--line);transition:background .35s,border-color .35s}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:62px;max-width:1180px;margin:0 auto;padding:0 28px}
+.brand{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.92rem;letter-spacing:-.01em}
+.brand b{color:var(--accent)}
+.nav-r{display:flex;align-items:center;gap:1.6rem}
+.nav-r a{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--ink-soft);transition:color .2s;position:relative}
+.nav-r a:hover{color:var(--accent)}
+.nav-r a.cv{border:1.5px solid var(--line);padding:.4rem .8rem;color:var(--ink)}
+.nav-r a.cv:hover{background:var(--ink);color:var(--paper)}
+.tg{font-family:'JetBrains Mono',monospace;font-size:.72rem;cursor:pointer;border:1.5px solid var(--line);padding:.4rem .7rem;background:transparent;color:var(--ink);transition:all .2s;letter-spacing:.05em}
+.tg:hover{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+.burger{display:none;flex-direction:column;gap:5px;width:42px;height:42px;border:1.5px solid var(--line);background:transparent;cursor:pointer;align-items:center;justify-content:center}
+.burger span{width:20px;height:2px;background:var(--ink);transition:.3s}
+.burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.burger.open span:nth-child(2){opacity:0}
+.burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
 
-  /* sections */
-  section{padding:78px 0;border-top:1px solid var(--line)}
-  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:48px}
-  .sec-num{font-family:'IBM Plex Mono',monospace;color:var(--accent-dim);font-size:.85rem}
-  .sec-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.01em}
+/* MOBILE MENU */
+.mmenu{position:fixed;inset:0;z-index:190;background:var(--paper);transform:translateY(-100%);transition:transform .42s cubic-bezier(.7,0,.2,1);display:flex;flex-direction:column;justify-content:center;padding:2rem 28px;gap:.2rem}
+.mmenu.open{transform:translateY(0)}
+.mmenu a{font-family:'Instrument Serif',serif;font-size:clamp(2.4rem,11vw,3.6rem);line-height:1.12;border-bottom:1.5px solid var(--line-soft);padding:.5rem 0;display:flex;align-items:baseline;gap:1rem;transition:color .2s,padding-left .2s}
+.mmenu a span{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--accent)}
+.mmenu a:hover{color:var(--accent);padding-left:.6rem}
 
-  .about-grid{display:grid;grid-template-columns:1fr;gap:30px}
-  .about p{color:var(--muted);font-size:1.05rem;margin-bottom:18px}
-  .about p b{color:var(--ink);font-weight:600}
-  .stats{display:flex;gap:38px;flex-wrap:wrap;margin-top:14px}
-  .stat .n{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:2.2rem;color:var(--accent)}
-  .stat .l{font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em}
+/* HERO */
+header{padding:clamp(3rem,9vw,7rem) 0 0}
+.kick{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--accent);letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:.7rem;margin-bottom:1.4rem}
+.kick::before{content:'';width:46px;height:1.5px;background:var(--accent)}
+.bigname{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(3.4rem,13vw,9rem);line-height:.92;letter-spacing:-.01em}
+.bigname .it{font-style:italic;color:var(--accent)}
+.hero-grid{display:grid;grid-template-columns:1.3fr .9fr;gap:3rem;align-items:end;margin-top:2.2rem}
+.hero-lead{font-size:clamp(1rem,2.1vw,1.28rem);max-width:30ch;color:var(--ink-soft);font-weight:400;line-height:1.7}
+.hero-lead b{color:var(--ink);font-weight:600}
+/* spec manifest */
+.manifest{border:1.5px solid var(--line)}
+.mrow{display:grid;grid-template-columns:34% 66%;border-bottom:1.5px solid var(--line)}
+.mrow:last-child{border-bottom:0}
+.mk{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:.7rem .9rem;border-right:1.5px solid var(--line);display:flex;align-items:center}
+.mv{font-family:'JetBrains Mono',monospace;font-size:.82rem;padding:.7rem .9rem;color:var(--ink);display:flex;align-items:center}
+.mv .dotok{width:7px;height:7px;border-radius:50%;background:var(--accent2);display:inline-block;margin-right:.5rem;animation:bp 1.8s infinite}
+@keyframes bp{0%,100%{opacity:1}50%{opacity:.35}}
+.hero-cta{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:2.4rem;padding-bottom:2.6rem}
+.bx{font-family:'JetBrains Mono',monospace;font-size:.82rem;padding:.85rem 1.5rem;border:1.5px solid var(--line);transition:all .2s;display:inline-flex;align-items:center;gap:.5rem}
+.bx:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--ink)}
+.bx.fill{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+.bx.fill:hover{box-shadow:4px 4px 0 var(--ink)}
 
-  /* skills */
-  .skill-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
-  .skill-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;transition:border-color .22s,transform .22s}
-  .skill-card:hover{border-color:var(--accent-dim);transform:translateY(-3px)}
-  .skill-card h3{font-family:'IBM Plex Mono',monospace;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
-  .tags{display:flex;flex-wrap:wrap;gap:8px}
-  .tag{font-size:.82rem;color:var(--muted);background:var(--bg-soft);border:1px solid var(--line);padding:5px 11px;border-radius:6px;transition:color .2s,border-color .2s}
-  .skill-card:hover .tag{color:var(--ink)}
+/* MARQUEE */
+.marq{border-top:1.5px solid var(--line);border-bottom:1.5px solid var(--line);overflow:hidden;background:var(--ink);color:var(--paper);padding:.7rem 0}
+.marq-tr{display:flex;gap:2.4rem;white-space:nowrap;width:max-content;animation:scroll 28s linear infinite;font-family:'JetBrains Mono',monospace;font-size:.84rem;letter-spacing:.04em}
+.marq-tr span{display:inline-flex;align-items:center;gap:2.4rem}
+.marq-tr span::after{content:'✦';color:var(--accent)}
+@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.marq:hover .marq-tr{animation-play-state:paused}
 
-  /* experience */
-  .xp{display:flex;gap:24px;padding:26px;background:var(--panel);border:1px solid var(--line);border-radius:14px;position:relative}
-  .xp .dot{flex:none;width:11px;height:11px;border-radius:50%;background:var(--accent);margin-top:8px;box-shadow:0 0 0 5px var(--glow)}
-  .xp .role{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:1.35rem}
-  .xp .meta{font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:var(--faint);margin:4px 0 16px}
-  .xp ul{list-style:none;display:flex;flex-direction:column;gap:9px}
-  .xp li{color:var(--muted);padding-left:20px;position:relative;font-size:.97rem}
-  .xp li::before{content:"▸";position:absolute;left:0;color:var(--accent-dim)}
-  .xp li b{color:var(--ink);font-weight:600}
+/* SECTION HEADERS */
+.sec{padding:clamp(3.5rem,7vw,6rem) 0}
+.sh{display:flex;align-items:baseline;gap:1.1rem;margin-bottom:2.6rem;border-bottom:1.5px solid var(--line);padding-bottom:1rem}
+.sh .no{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--accent);font-weight:700}
+.sh h2{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(2rem,5.5vw,3.4rem);line-height:1;letter-spacing:-.01em;flex:1}
+.sh .meta{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted);text-align:right;display:none}
+@media(min-width:760px){.sh .meta{display:block}}
 
-  /* projects */
-  .proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
-  .proj{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px;display:flex;flex-direction:column;transition:border-color .22s,transform .22s;position:relative;overflow:hidden}
-  .proj::after{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),transparent);transform:scaleX(0);transform-origin:left;transition:transform .3s}
-  .proj:hover{border-color:var(--accent-dim);transform:translateY(-4px)}
-  .proj:hover::after{transform:scaleX(1)}
-  .proj .idx{font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--accent-dim);margin-bottom:12px}
-  .proj h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:1.2rem;margin-bottom:10px;line-height:1.25}
-  .proj p{color:var(--muted);font-size:.93rem;flex:1;margin-bottom:16px}
-  .proj .stack{display:flex;flex-wrap:wrap;gap:7px}
-  .proj .stack span{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--faint);border:1px solid var(--line);padding:3px 8px;border-radius:5px}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr)}
+.stat{border:1.5px solid var(--line);border-left:0;padding:1.6rem 1.2rem;transition:background .25s}
+.stat:first-child{border-left:1.5px solid var(--line)}
+.stat:hover{background:var(--accent);color:var(--paper)}
+.stat .n{font-family:'Instrument Serif',serif;font-size:clamp(2.4rem,6vw,3.6rem);line-height:1}
+.stat .l{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.4rem}
+.stat:hover .l{color:var(--paper)}
 
-  /* contact */
-  .contact-box{text-align:center;padding:30px 0 10px}
-  .contact-box h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2rem,6vw,3.6rem);letter-spacing:-.02em;margin-bottom:18px}
-  .contact-box h2 em{font-style:normal;color:var(--accent)}
-  .contact-box p{color:var(--muted);max-width:480px;margin:0 auto 32px}
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:3rem}
+.about-body p{font-size:1.02rem;line-height:1.85;color:var(--ink-soft);margin-bottom:1.1rem;max-width:60ch}
+.about-body p b{color:var(--accent);font-weight:600}
+.about-body p:first-child::first-letter{font-family:'Instrument Serif',serif;font-size:3.6rem;line-height:.8;float:left;padding:.18rem .5rem 0 0;color:var(--ink)}
+.facts{border-top:1.5px solid var(--line)}
+.fact{padding:1rem 0;border-bottom:1.5px solid var(--line-soft)}
+.fact .ft{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.fact .fc{font-size:.92rem}
+.fact .fc .it{font-family:'Instrument Serif',serif;font-size:1.15rem}
 
-  footer{border-top:1px solid var(--line);padding:30px 0;text-align:center}
-  footer p{font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--faint)}
+/* SKILLS — spec sheet table */
+.spec{border:1.5px solid var(--line)}
+.spec-row{display:grid;grid-template-columns:26% 74%;border-bottom:1.5px solid var(--line)}
+.spec-row:last-child{border-bottom:0}
+.spec-cat{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);padding:1.1rem 1.1rem;border-right:1.5px solid var(--line);display:flex;align-items:center;font-weight:700}
+.spec-items{padding:1.1rem 1.1rem;display:flex;flex-wrap:wrap;gap:.5rem .9rem;align-items:center}
+.spec-items span{font-family:'JetBrains Mono',monospace;font-size:.84rem;position:relative;padding-left:1rem}
+.spec-items span::before{content:'›';position:absolute;left:0;color:var(--accent)}
 
-  /* reveal animation */
-  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
-  .reveal.in{opacity:1;transform:none}
-  header .reveal{transition-delay:calc(var(--d,0)*90ms)}
+/* EXPERIENCE */
+.xp{display:grid;grid-template-columns:.5fr 2.5fr;gap:1.5rem;padding:2rem 0;border-bottom:1.5px solid var(--line)}
+.xp-date{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--accent)}
+.xp-co{font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--muted);margin-top:.4rem}
+.xp-role{font-family:'Instrument Serif',serif;font-size:clamp(1.7rem,4vw,2.4rem);line-height:1.05;margin-bottom:1rem}
+.xp ul{list-style:none}
+.xp li{font-size:.95rem;line-height:1.7;color:var(--ink-soft);padding-left:1.5rem;position:relative;margin-bottom:.6rem;max-width:75ch}
+.xp li::before{content:'—';position:absolute;left:0;color:var(--accent)}
+
+/* PROJECTS — index list, invert on hover */
+.proj{display:grid;grid-template-columns:auto 1fr auto;gap:1.5rem;align-items:center;padding:1.8rem 1.4rem;border:1.5px solid var(--line);border-top:0;transition:background .22s,color .22s,padding-left .22s;cursor:default}
+.proj:first-of-type{border-top:1.5px solid var(--line)}
+.proj:hover{background:var(--ink);color:var(--paper);padding-left:2rem}
+.proj .pno{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--accent);font-weight:700}
+.proj .pt{font-family:'Instrument Serif',serif;font-size:clamp(1.25rem,3.2vw,1.7rem);line-height:1.1;margin-bottom:.45rem}
+.proj .pd{font-size:.9rem;line-height:1.6;color:var(--ink-soft);max-width:62ch}
+.proj:hover .pd{color:var(--paper2)}
+.proj .ptags{margin-top:.7rem;display:flex;flex-wrap:wrap;gap:.4rem .8rem}
+.proj .ptags em{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-style:normal;color:var(--muted)}
+.proj:hover .ptags em{color:var(--ink-soft)}
+.proj .pm{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--accent);text-align:right;max-width:14ch;line-height:1.4}
+@media(max-width:680px){.proj{grid-template-columns:auto 1fr}.proj .pm{display:none}}
+
+/* IMPACT */
+.imp{display:grid;grid-template-columns:repeat(2,1fr)}
+.imp-i{padding:1.6rem 1.4rem;border:1.5px solid var(--line);border-top:0;border-left:0;display:flex;gap:1rem;align-items:flex-start}
+.imp-i:nth-child(odd){border-left:1.5px solid var(--line)}
+.imp-i:nth-child(1),.imp-i:nth-child(2){border-top:1.5px solid var(--line)}
+.imp-i .ic{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--accent);font-weight:700;flex-shrink:0;padding-top:.15rem}
+.imp-i p{font-size:.92rem;line-height:1.6;color:var(--ink-soft)}
+.imp-i p b{color:var(--ink);font-weight:700}
+@media(max-width:680px){.imp{grid-template-columns:1fr}.imp-i{border-left:1.5px solid var(--line)!important}.imp-i:nth-child(2){border-top:0}}
+
+/* CONTACT */
+.contact-big{font-family:'Instrument Serif',serif;font-size:clamp(2.6rem,9vw,6rem);line-height:.95;letter-spacing:-.01em;margin-bottom:2rem}
+.contact-big .it{font-style:italic;color:var(--accent)}
+.clinks{border-top:1.5px solid var(--line)}
+.clink{display:flex;align-items:center;justify-content:space-between;padding:1.3rem 0;border-bottom:1.5px solid var(--line);transition:padding-left .22s,color .22s}
+.clink:hover{padding-left:1rem;color:var(--accent)}
+.clink .cl-k{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.clink .cl-v{font-family:'Instrument Serif',serif;font-size:clamp(1.2rem,3vw,1.9rem)}
+.clink .cl-ar{font-family:'JetBrains Mono',monospace;color:var(--accent)}
+
+footer{border-top:1.5px solid var(--line);padding:1.6rem 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+footer span{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted)}
+footer span b{color:var(--accent)}
+
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .6s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+
+@media(max-width:860px){
+  .nav-r a:not(.cv){display:none}.nav-r .tg{display:none}.burger{display:flex}
+  .hero-grid{grid-template-columns:1fr;gap:2.2rem}
+  .about-grid{grid-template-columns:1fr;gap:2rem}
+  .xp{grid-template-columns:1fr;gap:.8rem}
+  .spec-row{grid-template-columns:1fr}.spec-cat{border-right:0;border-bottom:1.5px solid var(--line-soft)}
+}
+@media(max-width:520px){.stats{grid-template-columns:repeat(2,1fr)}.stat:nth-child(3){border-left:1.5px solid var(--line)}.stat:nth-child(1),.stat:nth-child(2){border-bottom:0}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1!important;transform:none!important}.marq-tr{animation:none!important}}
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="wrap nav-inner">
-    <a href="#top" class="logo">PSK<span>::data_engineer</span></a>
-    <div class="nav-links">
-      <a href="#about">about</a>
-      <a href="#skills">skills</a>
-      <a href="#experience">experience</a>
-      <a href="#projects">projects</a>
-      <a href="#contact">contact</a>
+  <div class="nav-in">
+    <div class="brand">PALADI_SHANTHAN<b>.</b>DE</div>
+    <div class="nav-r">
+      <a href="#about">about</a><a href="#stack">stack</a><a href="#work">work</a>
+      <a href="#projects">projects</a><a href="#contact">contact</a>
+      <button class="tg" id="tg">[ DARK ]</button>
+      <a href="resume.pdf" download target="_blank" class="cv">RESUME ↓</a>
+      <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
   </div>
 </nav>
 
-<header id="top">
+<div class="mmenu" id="mmenu">
+  <a href="#about"><span>01</span>About</a>
+  <a href="#stack"><span>02</span>Stack</a>
+  <a href="#work"><span>03</span>Experience</a>
+  <a href="#projects"><span>04</span>Projects</a>
+  <a href="#impact"><span>05</span>Impact</a>
+  <a href="#contact"><span>06</span>Contact</a>
+</div>
+
+<header>
   <div class="wrap">
-    <div class="eyebrow reveal" style="--d:0">Data Engineer · Hyderabad, India</div>
-    <h1 class="reveal" style="--d:1">Paladi Shanthan Kumar<br><em>builds data that scales.</em></h1>
-    <p class="lede reveal" style="--d:2">Data Engineer with nearly <b>4 years</b> designing scalable ETL/ELT pipelines across the <b>Microsoft Azure</b> ecosystem — turning messy, distributed data into clean, governed, analytics-ready platforms.</p>
-    <div class="cta reveal" style="--d:3">
-      <a class="btn primary" href="mailto:shanthan811@gmail.com">→ Get in touch</a>
-      <a class="btn" href="https://github.com/shanthan-paladi" target="_blank" rel="noopener">GitHub</a>
-      <a class="btn" href="https://www.linkedin.com/in/shanthan-paladi-2b2bbb203/" target="_blank" rel="noopener">LinkedIn</a>
-      <a class="btn" href="resume.pdf" target="_blank" rel="noopener">Résumé ↓</a>
+    <div class="kick">Data Engineer · Hyderabad, India</div>
+    <h1 class="bigname">Paladi Shanthan<br><span class="it">Kumar</span></h1>
+    <div class="hero-grid">
+      <p class="hero-lead">I build <b>scalable ETL pipelines</b> on Microsoft Azure — turning messy, distributed data into clean, governed, analytics-ready platforms.</p>
+      <div class="manifest">
+        <div class="mrow"><div class="mk">Role</div><div class="mv">Data Engineer</div></div>
+        <div class="mrow"><div class="mk">Focus</div><div class="mv">Azure · Fabric · Databricks</div></div>
+        <div class="mrow"><div class="mk">Experience</div><div class="mv">~4 years</div></div>
+        <div class="mrow"><div class="mk">Based</div><div class="mv">Hyderabad, IN</div></div>
+        <div class="mrow"><div class="mk">Status</div><div class="mv"><span class="dotok"></span>Open to work</div></div>
+      </div>
+    </div>
+    <div class="hero-cta">
+      <a href="#projects" class="bx fill">VIEW WORK →</a>
+      <a href="#contact" class="bx">GET IN TOUCH</a>
+      <a href="resume.pdf" download target="_blank" class="bx">DOWNLOAD CV ↓</a>
     </div>
   </div>
 </header>
 
-<section id="about" class="about">
+<div class="marq">
+  <div class="marq-tr">
+    <span>SQL&nbsp;&nbsp;PYTHON&nbsp;&nbsp;PYSPARK&nbsp;&nbsp;AZURE DATA FACTORY&nbsp;&nbsp;MICROSOFT FABRIC&nbsp;&nbsp;DATABRICKS&nbsp;&nbsp;SYNAPSE&nbsp;&nbsp;DELTA LAKE&nbsp;&nbsp;LAKEHOUSE&nbsp;&nbsp;MEDALLION&nbsp;&nbsp;AZURE FUNCTIONS&nbsp;&nbsp;CI/CD</span>
+    <span>SQL&nbsp;&nbsp;PYTHON&nbsp;&nbsp;PYSPARK&nbsp;&nbsp;AZURE DATA FACTORY&nbsp;&nbsp;MICROSOFT FABRIC&nbsp;&nbsp;DATABRICKS&nbsp;&nbsp;SYNAPSE&nbsp;&nbsp;DELTA LAKE&nbsp;&nbsp;LAKEHOUSE&nbsp;&nbsp;MEDALLION&nbsp;&nbsp;AZURE FUNCTIONS&nbsp;&nbsp;CI/CD</span>
+  </div>
+</div>
+
+<section class="sec" id="stats-sec">
   <div class="wrap">
-    <div class="sec-head reveal"><span class="sec-num">01</span><span class="sec-title">About</span></div>
-    <div class="about-grid reveal">
-      <div>
-        <p>I design, build, and maintain <b>scalable data pipelines</b> and ETL/ELT solutions, with deep hands-on work in <b>Azure Data Factory, Microsoft Fabric, Databricks, PySpark, and Synapse Analytics</b>.</p>
-        <p>I've led the modernization of legacy on-premises ETL systems into cloud-native platforms, implemented <b>Medallion (Bronze–Silver–Gold) Lakehouse architectures</b>, and built pipelines processing over a million records a day — always with data quality, governance, and performance in mind.</p>
-        <p>I like the part of the job where reliable data quietly powers better business decisions.</p>
-        <div class="stats">
-          <div class="stat"><div class="n">~4</div><div class="l">Years experience</div></div>
-          <div class="stat"><div class="n">1M+</div><div class="l">Records / day</div></div>
-          <div class="stat"><div class="n">80%</div><div class="l">Fewer inconsistencies</div></div>
-        </div>
+    <div class="stats">
+      <div class="stat reveal"><div class="n" data-n="4">4</div><div class="l">Years Exp.</div></div>
+      <div class="stat reveal"><div class="n">1M+</div><div class="l">Rows / Day</div></div>
+      <div class="stat reveal"><div class="n" data-n="80" data-suf="%">80%</div><div class="l">Fewer Errors</div></div>
+      <div class="stat reveal"><div class="n" data-n="6">6</div><div class="l">Projects</div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section class="sec" id="about">
+  <div class="wrap">
+    <div class="sh"><span class="no">(01)</span><h2>About</h2><span class="meta">// who is behind the pipelines</span></div>
+    <div class="about-grid">
+      <div class="about-body">
+        <p>I design, build, and maintain scalable data pipelines and ETL/ELT solutions across the Microsoft Azure ecosystem — from ingesting raw data out of SQL Server, MySQL, and file sources through to <b>Gold-layer Lakehouse models</b> that power business intelligence.</p>
+        <p>I've led the modernization of legacy on-premises ETL systems into <b>cloud-native platforms</b>, implemented Medallion (Bronze–Silver–Gold) architectures in Microsoft Fabric, and built pipelines processing over a million records a day — always with data quality, governance, and performance in mind.</p>
+        <p>Currently a Data Engineer at <b>Hashstack Solutions</b> in Hyderabad.</p>
+      </div>
+      <div class="facts">
+        <div class="fact"><div class="ft">Education</div><div class="fc"><span class="it">B.Tech, Electronics &amp; Communication Engineering</span><br>Bharat Institute of Engineering &amp; Technology, Hyderabad · 2022</div></div>
+        <div class="fact"><div class="ft">Disciplines</div><div class="fc">ETL/ELT · Data Warehousing · Data Modelling · Data Governance · Performance Tuning</div></div>
+        <div class="fact"><div class="ft">Ways of working</div><div class="fc">Agile / Scrum · CI/CD · Cross-functional delivery</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="skills">
+<hr class="rule">
+
+<section class="sec" id="stack">
   <div class="wrap">
-    <div class="sec-head reveal"><span class="sec-num">02</span><span class="sec-title">Skills &amp; Stack</span></div>
-    <div class="skill-grid">
-      <div class="skill-card reveal"><h3>Languages</h3><div class="tags"><span class="tag">SQL</span><span class="tag">Python</span><span class="tag">PySpark</span><span class="tag">PL/SQL</span></div></div>
-      <div class="skill-card reveal"><h3>Cloud · Azure</h3><div class="tags"><span class="tag">Data Factory</span><span class="tag">Microsoft Fabric</span><span class="tag">Synapse</span><span class="tag">Databricks</span><span class="tag">Azure Functions</span></div></div>
-      <div class="skill-card reveal"><h3>Big Data</h3><div class="tags"><span class="tag">Apache Spark</span><span class="tag">Delta Lake</span><span class="tag">Lakehouse</span><span class="tag">Medallion</span></div></div>
-      <div class="skill-card reveal"><h3>Databases</h3><div class="tags"><span class="tag">SQL Server</span><span class="tag">PostgreSQL</span><span class="tag">MySQL</span></div></div>
-      <div class="skill-card reveal"><h3>DevOps &amp; Tools</h3><div class="tags"><span class="tag">Azure DevOps</span><span class="tag">CI/CD</span><span class="tag">Git</span></div></div>
-      <div class="skill-card reveal"><h3>Concepts</h3><div class="tags"><span class="tag">ETL / ELT</span><span class="tag">Data Warehousing</span><span class="tag">Data Modelling</span><span class="tag">Data Governance</span></div></div>
+    <div class="sh"><span class="no">(02)</span><h2>Stack</h2><span class="meta">// the tools, daily</span></div>
+    <div class="spec">
+      <div class="spec-row"><div class="spec-cat">Languages</div><div class="spec-items"><span>SQL</span><span>Python</span><span>PySpark</span><span>PL/SQL</span></div></div>
+      <div class="spec-row"><div class="spec-cat">Cloud · Azure</div><div class="spec-items"><span>Data Factory</span><span>Microsoft Fabric</span><span>Synapse</span><span>Databricks</span><span>Azure Functions</span></div></div>
+      <div class="spec-row"><div class="spec-cat">Architecture</div><div class="spec-items"><span>Delta Lake</span><span>Lakehouse</span><span>Medallion</span><span>ETL / ELT</span><span>Data Warehousing</span></div></div>
+      <div class="spec-row"><div class="spec-cat">Databases</div><div class="spec-items"><span>SQL Server</span><span>PostgreSQL</span><span>MySQL</span></div></div>
+      <div class="spec-row"><div class="spec-cat">Big Data</div><div class="spec-items"><span>Apache Spark</span><span>Spark SQL</span><span>Delta Lake</span></div></div>
+      <div class="spec-row"><div class="spec-cat">DevOps</div><div class="spec-items"><span>Azure DevOps</span><span>CI/CD</span><span>Git</span><span>SQL Data Modeler</span></div></div>
     </div>
   </div>
 </section>
 
-<section id="experience">
+<hr class="rule">
+
+<section class="sec" id="work">
   <div class="wrap">
-    <div class="sec-head reveal"><span class="sec-num">03</span><span class="sec-title">Experience</span></div>
-    <div class="xp reveal">
-      <div class="dot"></div>
+    <div class="sh"><span class="no">(03)</span><h2>Experience</h2><span class="meta">// where I've built things</span></div>
+    <div class="xp">
       <div>
-        <div class="role">Data Engineer</div>
-        <div class="meta">Hashstack Solutions Pvt. Ltd. (formerly Zitisi Solutions LLP) · Sep 2022 – Present · Hyderabad</div>
+        <div class="xp-date">SEP 2022 — PRESENT</div>
+        <div class="xp-co">Hashstack Solutions Pvt. Ltd.<br>(formerly Zitisi Solutions LLP)<br>Hyderabad</div>
+      </div>
+      <div>
+        <div class="xp-role">Data Engineer</div>
         <ul>
-          <li>Led modernization of a legacy ETL ecosystem, migrating on-premises C# and SQL Server workflows into a cloud-native platform on <b>Azure Data Factory</b> and <b>Microsoft Fabric</b>.</li>
-          <li>Designed and implemented <b>Medallion Architecture</b> (Bronze, Silver, Gold) in the Fabric Lakehouse for governed, performance-optimized data flows.</li>
-          <li>Built <b>ADF + PySpark</b> pipelines in <b>Databricks</b> processing <b>1M+ records daily</b> with reusable, high-performance transformations.</li>
-          <li>Developed SQL stored procedures and reusable views, reducing data inconsistencies by <b>up to 80%</b> and delivering analytics-ready data to BI teams.</li>
-          <li>Implemented <b>Azure DevOps CI/CD</b> pipelines for automated, reliable deployments under Agile delivery.</li>
+          <li>Led modernization of a legacy ETL ecosystem, migrating on-premises C# and SQL Server workflows into a cloud-native platform on Azure Data Factory and Microsoft Fabric.</li>
+          <li>Designed and implemented Medallion Architecture (Bronze, Silver, Gold) in the Fabric Lakehouse for governed, performance-optimized data flows.</li>
+          <li>Built ADF + PySpark pipelines in Databricks processing 1M+ records daily with reusable, high-performance transformations.</li>
+          <li>Developed SQL stored procedures and reusable views, reducing data inconsistencies by up to 80% and delivering analytics-ready data to BI teams.</li>
+          <li>Built custom Azure Functions automating file extraction from emails into Blob Storage; integrated REST API and ODBC sources.</li>
+          <li>Implemented Azure DevOps CI/CD pipelines for automated, reliable deployments under Agile delivery.</li>
         </ul>
       </div>
     </div>
   </div>
 </section>
 
-<section id="projects">
+<hr class="rule">
+
+<section class="sec" id="projects">
   <div class="wrap">
-    <div class="sec-head reveal"><span class="sec-num">04</span><span class="sec-title">Projects</span></div>
-    <div class="proj-grid">
-      <article class="proj reveal">
-        <div class="idx">P-01</div>
-        <h3>Enterprise Data Platform Modernization</h3>
-        <p>Migrated a legacy on-prem C#/SQL Server ETL ecosystem to a cloud-native platform. Built Medallion Lakehouse architecture, REST/ODBC ingestion, and custom Azure Functions for automated file ingestion.</p>
-        <div class="stack"><span>ADF</span><span>Microsoft Fabric</span><span>Lakehouse</span><span>Azure Functions</span></div>
-      </article>
-      <article class="proj reveal">
-        <div class="idx">P-02</div>
-        <h3>Databricks ETL for CRM/ERP Platform</h3>
-        <p>Designed scalable ETL pipelines with ADF and PySpark in Databricks to ingest and transform 1M+ records daily into a CRM environment, with CI/CD-driven deployments.</p>
-        <div class="stack"><span>Databricks</span><span>PySpark</span><span>ADF</span><span>Azure DevOps</span></div>
-      </article>
-      <article class="proj reveal">
-        <div class="idx">P-03</div>
-        <h3>Data Warehousing on Azure Synapse</h3>
-        <p>Built robust pipelines and dedicated SQL Pool stored procedures in Azure Synapse Analytics, reducing data inconsistencies by up to 80% and streamlining data movement.</p>
-        <div class="stack"><span>Synapse</span><span>Azure SQL</span><span>Stored Procedures</span></div>
-      </article>
-      <article class="proj reveal">
-        <div class="idx">P-04</div>
-        <h3>Enterprise Data Platform — Fabric &amp; CRM</h3>
-        <p>Developed ETL in Microsoft Fabric using the Fabric Link plugin to ingest CRM, Finance &amp; Operations data into the Lakehouse, with aggregate tables and procedures improving data quality.</p>
-        <div class="stack"><span>Microsoft Fabric</span><span>Fabric Link</span><span>PySpark</span><span>Lakehouse</span></div>
-      </article>
-      <article class="proj reveal">
-        <div class="idx">P-05</div>
-        <h3>Desktop Billing Application</h3>
-        <p>Built an interactive billing app in Python (Tkinter) with a PostgreSQL backend — automated PDF generation and messaging workflows, multithreading, and CSV export.</p>
-        <div class="stack"><span>Python</span><span>Tkinter</span><span>PostgreSQL</span></div>
-      </article>
-      <article class="proj reveal">
-        <div class="idx">P-06</div>
-        <h3>HRMS — Cloud Database Migration</h3>
-        <p>Migrated legacy databases to cloud PostgreSQL; built API-supportive views, procedures and functions, and designed an ER model with index-based query optimization.</p>
-        <div class="stack"><span>PostgreSQL</span><span>SQL Data Modeler</span><span>Data Modelling</span></div>
-      </article>
+    <div class="sh"><span class="no">(04)</span><h2>Projects</h2><span class="meta">// work that ships &amp; scales</span></div>
+    <div class="proj">
+      <div class="pno">P-01</div>
+      <div><div class="pt">Enterprise Data Platform Modernization</div><div class="pd">Migrated a legacy on-prem C#/SQL Server ETL ecosystem to a cloud-native platform. Built Medallion Lakehouse architecture, REST/ODBC ingestion, and custom Azure Functions for automated file ingestion.</div><div class="ptags"><em>ADF</em><em>Microsoft Fabric</em><em>Lakehouse</em><em>Azure Functions</em></div></div>
+      <div class="pm">Legacy → cloud-native</div>
+    </div>
+    <div class="proj">
+      <div class="pno">P-02</div>
+      <div><div class="pt">Databricks ETL for CRM/ERP Platform</div><div class="pd">Designed scalable ETL pipelines with ADF and PySpark in Databricks to ingest and transform data into a CRM environment, with CI/CD-driven deployments.</div><div class="ptags"><em>Databricks</em><em>PySpark</em><em>ADF</em><em>Azure DevOps</em></div></div>
+      <div class="pm">1M+ rows / day</div>
+    </div>
+    <div class="proj">
+      <div class="pno">P-03</div>
+      <div><div class="pt">Data Warehousing on Azure Synapse</div><div class="pd">Built robust pipelines and dedicated SQL Pool stored procedures in Azure Synapse Analytics, streamlining data movement and transformation.</div><div class="ptags"><em>Synapse</em><em>Azure SQL</em><em>Stored Procedures</em></div></div>
+      <div class="pm">80% fewer inconsistencies</div>
+    </div>
+    <div class="proj">
+      <div class="pno">P-04</div>
+      <div><div class="pt">Enterprise Data Platform — Fabric &amp; CRM</div><div class="pd">Developed ETL in Microsoft Fabric using the Fabric Link plugin to ingest CRM, Finance &amp; Operations data into the Lakehouse, with aggregate tables and procedures improving data quality.</div><div class="ptags"><em>Microsoft Fabric</em><em>Fabric Link</em><em>PySpark</em><em>Lakehouse</em></div></div>
+      <div class="pm">Better data quality</div>
+    </div>
+    <div class="proj">
+      <div class="pno">P-05</div>
+      <div><div class="pt">Desktop Billing Application</div><div class="pd">Built an interactive billing app in Python (Tkinter) with a PostgreSQL backend — automated PDF generation and messaging workflows, multithreading, and CSV export.</div><div class="ptags"><em>Python</em><em>Tkinter</em><em>PostgreSQL</em></div></div>
+      <div class="pm">Automated billing</div>
+    </div>
+    <div class="proj">
+      <div class="pno">P-06</div>
+      <div><div class="pt">HRMS — Cloud Database Migration</div><div class="pd">Migrated legacy databases to cloud PostgreSQL; built API-supportive views, procedures and functions, and designed an ER model with index-based query optimization.</div><div class="ptags"><em>PostgreSQL</em><em>SQL Data Modeler</em><em>Data Modelling</em></div></div>
+      <div class="pm">Reliability + scale</div>
     </div>
   </div>
 </section>
 
-<section id="contact">
-  <div class="wrap contact-box reveal">
-    <h2>Let's build something <em>scalable.</em></h2>
-    <p>Open to opportunities in Data Engineering. The fastest way to reach me is email — I read everything.</p>
-    <div class="cta" style="justify-content:center">
-      <a class="btn primary" href="mailto:shanthan811@gmail.com">→ shanthan811@gmail.com</a>
-      <a class="btn" href="https://www.linkedin.com/in/shanthan-paladi-2b2bbb203/" target="_blank" rel="noopener">LinkedIn</a>
-      <a class="btn" href="https://github.com/shanthan-paladi" target="_blank" rel="noopener">GitHub</a>
+<hr class="rule">
+
+<section class="sec" id="impact">
+  <div class="wrap">
+    <div class="sh"><span class="no">(05)</span><h2>Impact</h2><span class="meta">// outcomes, not adjectives</span></div>
+    <div class="imp">
+      <div class="imp-i"><div class="ic">[01]</div><p>Reduced data inconsistencies by up to <b>80%</b> via stored-procedure-driven cleansing and validation.</p></div>
+      <div class="imp-i"><div class="ic">[02]</div><p>Built pipelines processing <b>1M+ records daily</b> with reusable PySpark transformations in Databricks.</p></div>
+      <div class="imp-i"><div class="ic">[03]</div><p>Implemented <b>Medallion Architecture</b> (Bronze→Silver→Gold) in the Microsoft Fabric Lakehouse.</p></div>
+      <div class="imp-i"><div class="ic">[04]</div><p>Led <b>end-to-end modernization</b> of a legacy on-prem ETL ecosystem to cloud-native Azure.</p></div>
+      <div class="imp-i"><div class="ic">[05]</div><p>Automated file ingestion with custom <b>Azure Functions</b> and REST/ODBC integrations.</p></div>
+      <div class="imp-i"><div class="ic">[06]</div><p>Stood up <b>Azure DevOps CI/CD</b> for automated, reliable deployments under Agile delivery.</p></div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule">
+
+<section class="sec" id="contact">
+  <div class="wrap">
+    <div class="sh"><span class="no">(06)</span><h2>Contact</h2><span class="meta">// let's talk data</span></div>
+    <div class="contact-big">Let's build something <span class="it">scalable.</span></div>
+    <div class="clinks">
+      <a class="clink" href="mailto:shanthan811@gmail.com"><span class="cl-k">Email</span><span class="cl-v">shanthan811@gmail.com</span><span class="cl-ar">↗</span></a>
+      <a class="clink" href="https://www.linkedin.com/in/shanthan-paladi-2b2bbb203/" target="_blank" rel="noopener"><span class="cl-k">LinkedIn</span><span class="cl-v">Paladi Shanthan Kumar</span><span class="cl-ar">↗</span></a>
+      <a class="clink" href="https://github.com/shanthan-paladi" target="_blank" rel="noopener"><span class="cl-k">GitHub</span><span class="cl-v">github.com/shanthan-paladi</span><span class="cl-ar">↗</span></a>
+      <a class="clink" href="resume.pdf" download target="_blank"><span class="cl-k">Resume</span><span class="cl-v">Download PDF</span><span class="cl-ar">↓</span></a>
     </div>
   </div>
 </section>
 
 <footer>
-  <div class="wrap"><p>© 2026 Paladi Shanthan Kumar · Built with curiosity &amp; clean data.</p></div>
+  <div class="wrap" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem;width:100%">
+    <span>© 2026 PALADI SHANTHAN KUMAR</span>
+    <span>HYDERABAD, IN <b>//</b> DATA ENGINEER</span>
+  </div>
 </footer>
 
 <script>
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
-  },{threshold:.12});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
-  // hero reveals on load
-  window.addEventListener('load',()=>{
-    document.querySelectorAll('header .reveal').forEach(el=>el.classList.add('in'));
-  });
+(function(){
+  'use strict';
+  var html=document.documentElement;
+  function gs(){try{return localStorage.getItem('psk-th');}catch(e){return null;}}
+  function ss(v){try{localStorage.setItem('psk-th',v);}catch(e){}}
+  var saved=gs()||(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+  html.setAttribute('data-theme',saved);
+  function setLbl(t){var b=document.getElementById('tg');if(b)b.textContent=t==='dark'?'[ LIGHT ]':'[ DARK ]';}
+  setLbl(saved);
+  var tg=document.getElementById('tg');
+  if(tg)tg.addEventListener('click',function(){var n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);ss(n);setLbl(n);});
+
+  var burger=document.getElementById('burger'),mmenu=document.getElementById('mmenu');
+  function tog(){var o=mmenu.classList.toggle('open');burger.classList.toggle('open',o);document.body.style.overflow=o?'hidden':'';}
+  if(burger)burger.addEventListener('click',tog);
+  document.querySelectorAll('.mmenu a').forEach(function(a){a.addEventListener('click',function(){mmenu.classList.remove('open');burger.classList.remove('open');document.body.style.overflow='';});});
+
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=document.querySelector(this.getAttribute('href'));if(!t)return;e.preventDefault();var h=(document.querySelector('nav')||{}).offsetHeight||62;window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-h-6,behavior:'smooth'});});});
+
+  if('IntersectionObserver'in window){
+    var rv=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');rv.unobserve(e.target);}});},{threshold:.15});
+    document.querySelectorAll('.reveal').forEach(function(el){rv.observe(el);});
+    var sc=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var el=e.target.querySelector('.n[data-n]');if(el&&!el.dataset.done){el.dataset.done='1';var fin=+el.dataset.n,suf=el.dataset.suf||'',s0=null;function st(ts){if(!s0)s0=ts;var p=Math.min((ts-s0)/1100,1),ez=1-Math.pow(1-p,3);el.textContent=Math.round(ez*fin)+suf;if(p<1)requestAnimationFrame(st);}requestAnimationFrame(st);}});},{threshold:.5});
+    document.querySelectorAll('.stat').forEach(function(el){sc.observe(el);});
+  }
+})();
 </script>
 </body>
 </html>
