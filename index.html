@@ -1,394 +1,322 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#f3efe6" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#16140f" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#14100b" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#fff7ee" media="(prefers-color-scheme: light)">
 <title>Paladi Shanthan Kumar — Data Engineer</title>
 <meta name="description" content="Data Engineer building scalable ETL pipelines on Microsoft Azure, Fabric, Databricks and PySpark.">
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Archivo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Gabarito:wght@500;600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-[data-theme="light"]{
-  --paper:#f3efe6; --paper2:#ece7da; --ink:#16130d; --ink-soft:#4a4435;
-  --muted:#8c8470; --line:#16130d; --line-soft:#c9bfa9;
-  --accent:#e23b1e; --accent2:#1d6f5f; --sel:#e23b1e;
-}
 [data-theme="dark"]{
-  --paper:#16140f; --paper2:#1f1c15; --ink:#f3efe6; --ink-soft:#bdb6a3;
-  --muted:#79705c; --line:#f3efe6; --line-soft:#3a352a;
-  --accent:#ff5a36; --accent2:#43c4ac; --sel:#ff5a36;
+  --bg:#14100b; --bg2:#1c1610; --card:rgba(255,255,255,.04); --card-solid:#1f1810;
+  --border:rgba(255,154,60,.18); --border-h:rgba(255,154,60,.55);
+  --text:#fbf3e7; --muted:#b3a48f; --faint:#7d6f5b;
+  --ac:#ff9a3c; --ac2:#ffc24d; --ac3:#ff7aa2;
+  --glow:rgba(255,154,60,.28); --glare:rgba(255,255,255,.10);
+  --b1:rgba(255,154,60,.5); --b2:rgba(255,122,162,.4); --b3:rgba(255,194,77,.45);
+}
+[data-theme="light"]{
+  --bg:#fff7ee; --bg2:#fdeede; --card:rgba(255,255,255,.7); --card-solid:#ffffff;
+  --border:rgba(255,122,24,.22); --border-h:rgba(255,122,24,.6);
+  --text:#2a1c10; --muted:#7a6a58; --faint:#a4937c;
+  --ac:#f1700f; --ac2:#f59e0b; --ac3:#ff5d8f;
+  --glow:rgba(241,112,15,.22); --glare:rgba(255,255,255,.55);
+  --b1:rgba(255,160,80,.5); --b2:rgba(255,120,160,.4); --b3:rgba(255,200,90,.5);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
-::selection{background:var(--sel);color:var(--paper)}
-body{
-  font-family:'Archivo',sans-serif;background:var(--paper);color:var(--ink);
-  line-height:1.55;min-height:100vh;overflow-x:hidden;
-  transition:background .35s,color .35s;
-  padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);
-  background-image:radial-gradient(var(--line-soft) 0.6px,transparent 0.6px);
-  background-size:22px 22px;
-}
-a{color:inherit;text-decoration:none;-webkit-tap-highlight-color:transparent}
-::-webkit-scrollbar{width:6px}::-webkit-scrollbar-thumb{background:var(--accent)}
+::selection{background:var(--ac);color:#fff}
+body{font-family:'Hanken Grotesk',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;overflow-x:hidden;position:relative;transition:background .4s,color .4s;padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1140px;margin:0 auto;padding:0 26px}
+.mono{font-family:'Space Mono',monospace}
 
-.mono{font-family:'JetBrains Mono',monospace}
-.wrap{max-width:1180px;margin:0 auto;padding:0 28px}
-.rule{border:0;border-top:1.5px solid var(--line);margin:0}
+/* floating blobs */
+.blobs{position:fixed;inset:0;z-index:-2;overflow:hidden;pointer-events:none}
+.blobs i{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;transition:transform .3s ease-out}
+.blobs i:nth-child(1){width:40vw;height:40vw;background:radial-gradient(circle,var(--b1),transparent 60%);top:-8%;left:-6%}
+.blobs i:nth-child(2){width:36vw;height:36vw;background:radial-gradient(circle,var(--b2),transparent 60%);top:30%;right:-10%}
+.blobs i:nth-child(3){width:34vw;height:34vw;background:radial-gradient(circle,var(--b3),transparent 60%);bottom:-10%;left:30%}
+
+/* scroll progress */
+.prog{position:fixed;top:0;left:0;height:3px;width:0;z-index:400;background:linear-gradient(90deg,var(--ac),var(--ac3));box-shadow:0 0 12px var(--glow)}
+
+/* custom cursor */
+.cur,.cur-d{position:fixed;top:0;left:0;z-index:500;pointer-events:none;border-radius:50%;mix-blend-mode:difference}
+.cur{width:34px;height:34px;border:2px solid #fff;transition:transform .15s ease,width .2s,height .2s,opacity .2s;transform:translate(-50%,-50%)}
+.cur-d{width:6px;height:6px;background:#fff;transform:translate(-50%,-50%)}
+.cur.big{width:64px;height:64px;background:rgba(255,255,255,.1)}
+@media(hover:none),(pointer:coarse){.cur,.cur-d{display:none}}
 
 /* NAV */
-nav{position:sticky;top:0;z-index:200;background:var(--paper);border-bottom:1.5px solid var(--line);transition:background .35s,border-color .35s}
-.nav-in{display:flex;align-items:center;justify-content:space-between;height:62px;max-width:1180px;margin:0 auto;padding:0 28px}
-.brand{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.92rem;letter-spacing:-.01em}
-.brand b{color:var(--accent)}
-.nav-r{display:flex;align-items:center;gap:1.6rem}
-.nav-r a{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--ink-soft);transition:color .2s;position:relative}
-.nav-r a:hover{color:var(--accent)}
-.nav-r a.cv{border:1.5px solid var(--line);padding:.4rem .8rem;color:var(--ink)}
-.nav-r a.cv:hover{background:var(--ink);color:var(--paper)}
-.tg{font-family:'JetBrains Mono',monospace;font-size:.72rem;cursor:pointer;border:1.5px solid var(--line);padding:.4rem .7rem;background:transparent;color:var(--ink);transition:all .2s;letter-spacing:.05em}
-.tg:hover{background:var(--accent);color:var(--paper);border-color:var(--accent)}
-.burger{display:none;flex-direction:column;gap:5px;width:42px;height:42px;border:1.5px solid var(--line);background:transparent;cursor:pointer;align-items:center;justify-content:center}
-.burger span{width:20px;height:2px;background:var(--ink);transition:.3s}
+nav{position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:200;width:calc(100% - 32px);max-width:980px}
+.nav-in{display:flex;align-items:center;justify-content:space-between;background:var(--card);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid var(--border);border-radius:50px;padding:8px 8px 8px 20px;box-shadow:0 10px 34px rgba(0,0,0,.18)}
+.brand{font-family:'Gabarito',sans-serif;font-weight:800;font-size:1rem}
+.brand b{color:var(--ac)}
+.nav-links{display:flex;gap:4px}
+.nav-links a{font-size:.84rem;font-weight:600;color:var(--muted);padding:8px 13px;border-radius:50px;transition:.2s}
+.nav-links a:hover,.nav-links a.active{color:var(--text);background:var(--bg2)}
+.nav-r{display:flex;align-items:center;gap:8px}
+.ttoggle{width:40px;height:40px;border-radius:50px;border:1px solid var(--border);background:var(--bg2);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:.2s}
+.ttoggle:hover{transform:rotate(20deg) scale(1.08)}
+.nav-cv{font-size:.84rem;font-weight:700;color:#fff!important;background:linear-gradient(120deg,var(--ac),var(--ac3));padding:10px 18px;border-radius:50px;will-change:transform}
+.burger{display:none;width:40px;height:40px;border:1px solid var(--border);background:var(--bg2);border-radius:50px;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.burger span{width:18px;height:2px;background:var(--text);border-radius:2px;transition:.3s}
 .burger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
 .burger.open span:nth-child(2){opacity:0}
 .burger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
-
-/* MOBILE MENU */
-.mmenu{position:fixed;inset:0;z-index:190;background:var(--paper);transform:translateY(-100%);transition:transform .42s cubic-bezier(.7,0,.2,1);display:flex;flex-direction:column;justify-content:center;padding:2rem 28px;gap:.2rem}
-.mmenu.open{transform:translateY(0)}
-.mmenu a{font-family:'Instrument Serif',serif;font-size:clamp(2.4rem,11vw,3.6rem);line-height:1.12;border-bottom:1.5px solid var(--line-soft);padding:.5rem 0;display:flex;align-items:baseline;gap:1rem;transition:color .2s,padding-left .2s}
-.mmenu a span{font-family:'JetBrains Mono',monospace;font-size:.8rem;color:var(--accent)}
-.mmenu a:hover{color:var(--accent);padding-left:.6rem}
+.mmenu{position:fixed;inset:0;z-index:190;background:var(--bg);display:flex;flex-direction:column;justify-content:center;gap:.3rem;padding:0 32px;opacity:0;pointer-events:none;transition:opacity .3s}
+.mmenu.open{opacity:1;pointer-events:auto}
+.mmenu a{font-family:'Gabarito',sans-serif;font-size:2.2rem;font-weight:800;padding:.4rem 0;color:var(--muted);transition:.2s}
+.mmenu a:hover{color:var(--ac);transform:translateX(8px)}
 
 /* HERO */
-header{padding:clamp(3rem,9vw,7rem) 0 0}
-.kick{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--accent);letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:.7rem;margin-bottom:1.4rem}
-.kick::before{content:'';width:46px;height:1.5px;background:var(--accent)}
-.bigname{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(3.4rem,13vw,9rem);line-height:.92;letter-spacing:-.01em}
-.bigname .it{font-style:italic;color:var(--accent)}
-.hero-grid{display:grid;grid-template-columns:1.3fr .9fr;gap:3rem;align-items:end;margin-top:2.2rem}
-.hero-lead{font-size:clamp(1rem,2.1vw,1.28rem);max-width:30ch;color:var(--ink-soft);font-weight:400;line-height:1.7}
-.hero-lead b{color:var(--ink);font-weight:600}
-/* spec manifest */
-.manifest{border:1.5px solid var(--line)}
-.mrow{display:grid;grid-template-columns:34% 66%;border-bottom:1.5px solid var(--line)}
-.mrow:last-child{border-bottom:0}
-.mk{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:.7rem .9rem;border-right:1.5px solid var(--line);display:flex;align-items:center}
-.mv{font-family:'JetBrains Mono',monospace;font-size:.82rem;padding:.7rem .9rem;color:var(--ink);display:flex;align-items:center}
-.mv .dotok{width:7px;height:7px;border-radius:50%;background:var(--accent2);display:inline-block;margin-right:.5rem;animation:bp 1.8s infinite}
-@keyframes bp{0%,100%{opacity:1}50%{opacity:.35}}
-.hero-cta{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:2.4rem;padding-bottom:2.6rem}
-.bx{font-family:'JetBrains Mono',monospace;font-size:.82rem;padding:.85rem 1.5rem;border:1.5px solid var(--line);transition:all .2s;display:inline-flex;align-items:center;gap:.5rem}
-.bx:hover{transform:translate(-2px,-2px);box-shadow:4px 4px 0 var(--ink)}
-.bx.fill{background:var(--accent);color:var(--paper);border-color:var(--accent)}
-.bx.fill:hover{box-shadow:4px 4px 0 var(--ink)}
+header{min-height:100vh;min-height:100svh;display:flex;align-items:center;padding:8rem 0 4rem;position:relative}
+.wave{display:inline-block;animation:wave 2.4s ease-in-out infinite;transform-origin:70% 70%}
+@keyframes wave{0%,60%,100%{transform:rotate(0)}10%{transform:rotate(16deg)}20%{transform:rotate(-8deg)}30%{transform:rotate(16deg)}40%{transform:rotate(-4deg)}50%{transform:rotate(10deg)}}
+.pill{display:inline-flex;align-items:center;gap:.55rem;font-family:'Space Mono',monospace;font-size:.74rem;color:var(--ac);background:var(--card);border:1px solid var(--border);padding:.45rem 1rem;border-radius:50px;margin-bottom:1.6rem}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 4px var(--glow);animation:bp 2s infinite}
+@keyframes bp{0%,100%{opacity:1}50%{opacity:.4}}
+.hname{font-family:'Gabarito',sans-serif;font-weight:900;font-size:clamp(3rem,9vw,6.4rem);line-height:.96;letter-spacing:-.03em;margin-bottom:1.2rem}
+.hname .g{background:linear-gradient(115deg,var(--ac),var(--ac2) 40%,var(--ac3));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;background-size:200%;animation:sheen 5s linear infinite}
+@keyframes sheen{to{background-position:200% center}}
+.hrole{font-size:clamp(1.05rem,2.4vw,1.4rem);font-weight:700;margin-bottom:1rem}
+.hlead{font-size:1.05rem;color:var(--muted);max-width:540px;line-height:1.8;margin-bottom:2.2rem}
+.hbtns{display:flex;gap:.8rem;flex-wrap:wrap;margin-bottom:1.9rem}
+.btn{display:inline-flex;align-items:center;gap:.5rem;font-weight:700;font-size:.92rem;padding:.9rem 1.7rem;border-radius:50px;border:1px solid var(--border);transition:box-shadow .25s,background .25s,border-color .25s;will-change:transform}
+.btn.primary{background:linear-gradient(120deg,var(--ac),var(--ac3));color:#fff;border:none}
+.btn.primary:hover{box-shadow:0 12px 36px var(--glow)}
+.btn.ghost{background:var(--card)}
+.btn.ghost:hover{border-color:var(--border-h);background:var(--bg2)}
+.hsoc{display:flex;gap:.6rem;flex-wrap:wrap}
+.hsoc a{font-family:'Space Mono',monospace;font-size:.76rem;color:var(--muted);border:1px solid var(--border);padding:.5rem .9rem;border-radius:50px;transition:.2s}
+.hsoc a:hover{color:var(--ac);border-color:var(--border-h);transform:translateY(-2px)}
 
-/* MARQUEE */
-.marq{border-top:1.5px solid var(--line);border-bottom:1.5px solid var(--line);overflow:hidden;background:var(--ink);color:var(--paper);padding:.7rem 0}
-.marq-tr{display:flex;gap:2.4rem;white-space:nowrap;width:max-content;animation:scroll 28s linear infinite;font-family:'JetBrains Mono',monospace;font-size:.84rem;letter-spacing:.04em}
-.marq-tr span{display:inline-flex;align-items:center;gap:2.4rem}
-.marq-tr span::after{content:'✦';color:var(--accent)}
-@keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.marq:hover .marq-tr{animation-play-state:paused}
+/* SECTION */
+.sec{padding:5.5rem 0;position:relative}
+.sec-k{font-family:'Space Mono',monospace;font-size:.76rem;color:var(--ac);letter-spacing:.16em;text-transform:uppercase;margin-bottom:.6rem;display:flex;align-items:center;gap:.6rem}
+.sec-k::before{content:'';width:22px;height:1px;background:var(--ac)}
+.sec-t{font-family:'Gabarito',sans-serif;font-weight:800;font-size:clamp(2rem,5vw,3.1rem);letter-spacing:-.02em;line-height:1.08}
+.sec-s{color:var(--muted);max-width:520px;margin-top:.8rem;font-size:.98rem}
+.sec-h{margin-bottom:2.6rem}
 
-/* SECTION HEADERS */
-.sec{padding:clamp(3.5rem,7vw,6rem) 0}
-.sh{display:flex;align-items:baseline;gap:1.1rem;margin-bottom:2.6rem;border-bottom:1.5px solid var(--line);padding-bottom:1rem}
-.sh .no{font-family:'JetBrains Mono',monospace;font-size:.85rem;color:var(--accent);font-weight:700}
-.sh h2{font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(2rem,5.5vw,3.4rem);line-height:1;letter-spacing:-.01em;flex:1}
-.sh .meta{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted);text-align:right;display:none}
-@media(min-width:760px){.sh .meta{display:block}}
+/* TILT CARD */
+.tw{perspective:900px;height:100%}
+.bento .tw>.card{height:100%}
+.card{position:relative;background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--border);border-radius:22px;overflow:hidden;transform-style:preserve-3d;transition:border-color .3s,box-shadow .3s}
+.card .glare{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(360px circle at var(--gx,50%) var(--gy,50%),var(--glare),transparent 55%)}
+.card:hover{border-color:var(--border-h);box-shadow:0 20px 50px rgba(0,0,0,.22)}
+.card:hover .glare{opacity:1}
+.emoji{display:inline-block;transition:transform .3s}
+.card:hover .emoji{transform:scale(1.18) rotate(-8deg)}
 
-/* STATS */
-.stats{display:grid;grid-template-columns:repeat(4,1fr)}
-.stat{border:1.5px solid var(--line);border-left:0;padding:1.6rem 1.2rem;transition:background .25s}
-.stat:first-child{border-left:1.5px solid var(--line)}
-.stat:hover{background:var(--accent);color:var(--paper)}
-.stat .n{font-family:'Instrument Serif',serif;font-size:clamp(2.4rem,6vw,3.6rem);line-height:1}
-.stat .l{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:.4rem}
-.stat:hover .l{color:var(--paper)}
+/* BENTO ABOUT */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:minmax(132px,auto);gap:16px}
+.tw.w-about{grid-column:span 2;grid-row:span 2}
+.tw.w-wide{grid-column:span 2}
+.b-about{padding:2rem}
+.b-stat{padding:1.5rem;display:flex;flex-direction:column;justify-content:center}
+.b-edu{padding:1.6rem}
+.b-focus{padding:1.6rem}
+.b-about h3{font-family:'Gabarito',sans-serif;font-size:1.3rem;font-weight:800;margin-bottom:.9rem}
+.b-about p{color:var(--muted);font-size:.95rem;line-height:1.78;margin-bottom:.8rem}
+.b-about p b{color:var(--ac);font-weight:700}
+.b-num{font-family:'Gabarito',sans-serif;font-weight:900;font-size:clamp(2rem,4vw,2.9rem);line-height:1;background:linear-gradient(120deg,var(--ac),var(--ac3));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.b-lbl{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--faint);text-transform:uppercase;letter-spacing:.06em;margin-top:.5rem}
+.b-cap{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--ac);letter-spacing:.12em;text-transform:uppercase;margin-bottom:.7rem}
+.b-edu .t{font-family:'Gabarito',sans-serif;font-weight:700;font-size:1.05rem}
+.b-edu .s{color:var(--muted);font-size:.86rem;margin-top:.3rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{font-family:'Space Mono',monospace;font-size:.74rem;color:var(--muted);background:var(--bg2);border:1px solid var(--border);padding:.34rem .7rem;border-radius:50px}
+@media(max-width:820px){.bento{grid-template-columns:repeat(2,1fr)}.tw.w-about,.tw.w-wide{grid-column:span 2}.tw.w-about{grid-row:auto}}
+@media(max-width:480px){.bento{grid-template-columns:1fr}.tw.w-about,.tw.w-wide{grid-column:auto}}
 
-/* ABOUT */
-.about-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:3rem}
-.about-body p{font-size:1.02rem;line-height:1.85;color:var(--ink-soft);margin-bottom:1.1rem;max-width:60ch}
-.about-body p b{color:var(--accent);font-weight:600}
-.about-body p:first-child::first-letter{font-family:'Instrument Serif',serif;font-size:3.6rem;line-height:.8;float:left;padding:.18rem .5rem 0 0;color:var(--ink)}
-.facts{border-top:1.5px solid var(--line)}
-.fact{padding:1rem 0;border-bottom:1.5px solid var(--line-soft)}
-.fact .ft{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
-.fact .fc{font-size:.92rem}
-.fact .fc .it{font-family:'Instrument Serif',serif;font-size:1.15rem}
-
-/* SKILLS — spec sheet table */
-.spec{border:1.5px solid var(--line)}
-.spec-row{display:grid;grid-template-columns:26% 74%;border-bottom:1.5px solid var(--line)}
-.spec-row:last-child{border-bottom:0}
-.spec-cat{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);padding:1.1rem 1.1rem;border-right:1.5px solid var(--line);display:flex;align-items:center;font-weight:700}
-.spec-items{padding:1.1rem 1.1rem;display:flex;flex-wrap:wrap;gap:.5rem .9rem;align-items:center}
-.spec-items span{font-family:'JetBrains Mono',monospace;font-size:.84rem;position:relative;padding-left:1rem}
-.spec-items span::before{content:'›';position:absolute;left:0;color:var(--accent)}
+/* SKILLS */
+.sk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.sk{padding:1.5rem}
+.sk-ic{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;background:linear-gradient(135deg,var(--glow),transparent);border:1px solid var(--border);margin-bottom:1rem}
+.sk-cat{font-family:'Gabarito',sans-serif;font-weight:700;font-size:1.05rem;margin-bottom:.8rem}
+.sk-tg{display:flex;flex-wrap:wrap;gap:.45rem}
+.sk-tg span{font-family:'Space Mono',monospace;font-size:.74rem;color:var(--muted);background:var(--bg2);border:1px solid var(--border);padding:.3rem .65rem;border-radius:8px}
+@media(max-width:760px){.sk-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:460px){.sk-grid{grid-template-columns:1fr}}
 
 /* EXPERIENCE */
-.xp{display:grid;grid-template-columns:.5fr 2.5fr;gap:1.5rem;padding:2rem 0;border-bottom:1.5px solid var(--line)}
-.xp-date{font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--accent)}
-.xp-co{font-family:'JetBrains Mono',monospace;font-size:.74rem;color:var(--muted);margin-top:.4rem}
-.xp-role{font-family:'Instrument Serif',serif;font-size:clamp(1.7rem,4vw,2.4rem);line-height:1.05;margin-bottom:1rem}
-.xp ul{list-style:none}
-.xp li{font-size:.95rem;line-height:1.7;color:var(--ink-soft);padding-left:1.5rem;position:relative;margin-bottom:.6rem;max-width:75ch}
-.xp li::before{content:'—';position:absolute;left:0;color:var(--accent)}
+.xp{padding:2rem;display:grid;grid-template-columns:auto 1fr;gap:1.5rem}
+.xp .lft .d{font-family:'Space Mono',monospace;font-size:.78rem;color:var(--ac)}
+.xp .lft .co{color:var(--faint);font-size:.76rem;margin-top:.5rem;line-height:1.5}
+.xp .role{font-family:'Gabarito',sans-serif;font-weight:800;font-size:1.5rem;margin-bottom:1rem}
+.xp ul{list-style:none;display:flex;flex-direction:column;gap:.7rem}
+.xp li{color:var(--muted);font-size:.93rem;line-height:1.7;padding-left:1.5rem;position:relative}
+.xp li::before{content:'✦';position:absolute;left:0;color:var(--ac);font-size:.7rem;top:.3em}
+.xp li b{color:var(--text);font-weight:700}
+@media(max-width:680px){.xp{grid-template-columns:1fr;gap:.8rem;padding:1.6rem}}
 
-/* PROJECTS — index list, invert on hover */
-.proj{display:grid;grid-template-columns:auto 1fr auto;gap:1.5rem;align-items:center;padding:1.8rem 1.4rem;border:1.5px solid var(--line);border-top:0;transition:background .22s,color .22s,padding-left .22s;cursor:default}
-.proj:first-of-type{border-top:1.5px solid var(--line)}
-.proj:hover{background:var(--ink);color:var(--paper);padding-left:2rem}
-.proj .pno{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--accent);font-weight:700}
-.proj .pt{font-family:'Instrument Serif',serif;font-size:clamp(1.25rem,3.2vw,1.7rem);line-height:1.1;margin-bottom:.45rem}
-.proj .pd{font-size:.9rem;line-height:1.6;color:var(--ink-soft);max-width:62ch}
-.proj:hover .pd{color:var(--paper2)}
-.proj .ptags{margin-top:.7rem;display:flex;flex-wrap:wrap;gap:.4rem .8rem}
-.proj .ptags em{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-style:normal;color:var(--muted)}
-.proj:hover .ptags em{color:var(--ink-soft)}
-.proj .pm{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--accent);text-align:right;max-width:14ch;line-height:1.4}
-@media(max-width:680px){.proj{grid-template-columns:auto 1fr}.proj .pm{display:none}}
-
-/* IMPACT */
-.imp{display:grid;grid-template-columns:repeat(2,1fr)}
-.imp-i{padding:1.6rem 1.4rem;border:1.5px solid var(--line);border-top:0;border-left:0;display:flex;gap:1rem;align-items:flex-start}
-.imp-i:nth-child(odd){border-left:1.5px solid var(--line)}
-.imp-i:nth-child(1),.imp-i:nth-child(2){border-top:1.5px solid var(--line)}
-.imp-i .ic{font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--accent);font-weight:700;flex-shrink:0;padding-top:.15rem}
-.imp-i p{font-size:.92rem;line-height:1.6;color:var(--ink-soft)}
-.imp-i p b{color:var(--ink);font-weight:700}
-@media(max-width:680px){.imp{grid-template-columns:1fr}.imp-i{border-left:1.5px solid var(--line)!important}.imp-i:nth-child(2){border-top:0}}
+/* PROJECTS */
+.pj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.pj{padding:1.7rem;display:flex;flex-direction:column;gap:.9rem;min-height:220px}
+.pj-top{display:flex;align-items:center;justify-content:space-between}
+.pj-ic{width:46px;height:46px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;background:linear-gradient(135deg,var(--glow),transparent);border:1px solid var(--border)}
+.pj-no{font-family:'Space Mono',monospace;font-size:.74rem;color:var(--faint)}
+.pj-t{font-family:'Gabarito',sans-serif;font-weight:700;font-size:1.15rem}
+.pj-d{color:var(--muted);font-size:.9rem;line-height:1.65;flex:1}
+.pj-tg{display:flex;flex-wrap:wrap;gap:.4rem}
+.pj-tg span{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--ac);background:var(--glow);border:1px solid var(--border);padding:.26rem .6rem;border-radius:7px}
+.pj-m{font-family:'Space Mono',monospace;font-size:.72rem;color:var(--faint);border-top:1px solid var(--border);padding-top:.8rem}
+@media(max-width:680px){.pj-grid{grid-template-columns:1fr}}
 
 /* CONTACT */
-.contact-big{font-family:'Instrument Serif',serif;font-size:clamp(2.6rem,9vw,6rem);line-height:.95;letter-spacing:-.01em;margin-bottom:2rem}
-.contact-big .it{font-style:italic;color:var(--accent)}
-.clinks{border-top:1.5px solid var(--line)}
-.clink{display:flex;align-items:center;justify-content:space-between;padding:1.3rem 0;border-bottom:1.5px solid var(--line);transition:padding-left .22s,color .22s}
-.clink:hover{padding-left:1rem;color:var(--accent)}
-.clink .cl-k{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
-.clink .cl-v{font-family:'Instrument Serif',serif;font-size:clamp(1.2rem,3vw,1.9rem)}
-.clink .cl-ar{font-family:'JetBrains Mono',monospace;color:var(--accent)}
+.ct{padding:3rem 2.4rem;text-align:center}
+.ct h2{font-family:'Gabarito',sans-serif;font-weight:900;font-size:clamp(2rem,6vw,3.4rem);letter-spacing:-.02em;line-height:1.05;margin-bottom:1rem}
+.ct h2 .g{background:linear-gradient(115deg,var(--ac),var(--ac3));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.ct p{color:var(--muted);max-width:440px;margin:0 auto 2rem;font-size:1rem}
+.ct-btns{display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap}
 
-footer{border-top:1.5px solid var(--line);padding:1.6rem 0;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
-footer span{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted)}
-footer span b{color:var(--accent)}
+footer{border-top:1px solid var(--border);padding:2rem 0;margin-top:2rem}
+.foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.foot span{font-family:'Space Mono',monospace;font-size:.74rem;color:var(--faint)}
+.foot b{color:var(--ac)}
 
-.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s cubic-bezier(.2,.7,.2,1),transform .6s cubic-bezier(.2,.7,.2,1)}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.34,1.4,.5,1),transform .7s cubic-bezier(.34,1.4,.5,1)}
 .reveal.in{opacity:1;transform:none}
+.reveal-f{opacity:0;filter:blur(8px);transition:opacity .7s ease,filter .7s ease}
+.reveal-f.in{opacity:1;filter:none}
 
-@media(max-width:860px){
-  .nav-r a:not(.cv){display:none}.nav-r .tg{display:none}.burger{display:flex}
-  .hero-grid{grid-template-columns:1fr;gap:2.2rem}
-  .about-grid{grid-template-columns:1fr;gap:2rem}
-  .xp{grid-template-columns:1fr;gap:.8rem}
-  .spec-row{grid-template-columns:1fr}.spec-cat{border-right:0;border-bottom:1.5px solid var(--line-soft)}
-}
-@media(max-width:520px){.stats{grid-template-columns:repeat(2,1fr)}.stat:nth-child(3){border-left:1.5px solid var(--line)}.stat:nth-child(1),.stat:nth-child(2){border-bottom:0}}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.reveal{opacity:1!important;transform:none!important}.marq-tr{animation:none!important}}
+@media(max-width:860px){.nav-links{display:none}.nav-cv{display:none}.burger{display:flex}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}.reveal,.reveal-f{opacity:1!important;transform:none!important;filter:none!important}.blobs i{transition:none!important}}
 </style>
 </head>
 <body>
 
+<div class="prog" id="prog"></div>
+<div class="blobs"><i></i><i></i><i></i></div>
+<div class="cur" id="cur"></div><div class="cur-d" id="curd"></div>
+
 <nav>
   <div class="nav-in">
-    <div class="brand">PALADI_SHANTHAN<b>.</b>DE</div>
+    <div class="brand">Shanthan<b>.</b></div>
+    <div class="nav-links">
+      <a href="#about">About</a><a href="#skills">Skills</a><a href="#work">Experience</a>
+      <a href="#projects">Projects</a><a href="#contact">Contact</a>
+    </div>
     <div class="nav-r">
-      <a href="#about">about</a><a href="#stack">stack</a><a href="#work">work</a>
-      <a href="#projects">projects</a><a href="#contact">contact</a>
-      <button class="tg" id="tg">[ DARK ]</button>
-      <a href="resume.pdf" download target="_blank" class="cv">RESUME ↓</a>
+      <button class="ttoggle" id="tt" aria-label="Toggle theme">🌙</button>
+      <a href="resume.pdf" download target="_blank" class="nav-cv mag">Resume ↓</a>
       <button class="burger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
     </div>
   </div>
 </nav>
 
 <div class="mmenu" id="mmenu">
-  <a href="#about"><span>01</span>About</a>
-  <a href="#stack"><span>02</span>Stack</a>
-  <a href="#work"><span>03</span>Experience</a>
-  <a href="#projects"><span>04</span>Projects</a>
-  <a href="#impact"><span>05</span>Impact</a>
-  <a href="#contact"><span>06</span>Contact</a>
+  <a href="#about">About</a><a href="#skills">Skills</a><a href="#work">Experience</a>
+  <a href="#projects">Projects</a><a href="#contact">Contact</a>
+  <a href="resume.pdf" download target="_blank" style="color:var(--ac)">Resume ↓</a>
 </div>
 
 <header>
   <div class="wrap">
-    <div class="kick">Data Engineer · Hyderabad, India</div>
-    <h1 class="bigname">Paladi Shanthan<br><span class="it">Kumar</span></h1>
-    <div class="hero-grid">
-      <p class="hero-lead">I build <b>scalable ETL pipelines</b> on Microsoft Azure — turning messy, distributed data into clean, governed, analytics-ready platforms.</p>
-      <div class="manifest">
-        <div class="mrow"><div class="mk">Role</div><div class="mv">Data Engineer</div></div>
-        <div class="mrow"><div class="mk">Focus</div><div class="mv">Azure · Fabric · Databricks</div></div>
-        <div class="mrow"><div class="mk">Experience</div><div class="mv">~4 years</div></div>
-        <div class="mrow"><div class="mk">Based</div><div class="mv">Hyderabad, IN</div></div>
-        <div class="mrow"><div class="mk">Status</div><div class="mv"><span class="dotok"></span>Open to work</div></div>
-      </div>
+    <div class="pill reveal"><span class="dot"></span>Open to opportunities · Hyderabad, India</div>
+    <h1 class="hname reveal">Hey, I'm Shanthan <span class="wave">👋</span><br><span class="g">Data Engineer.</span></h1>
+    <p class="hrole reveal">Azure · Microsoft Fabric · Databricks · PySpark</p>
+    <p class="hlead reveal">I build scalable ETL pipelines on the Microsoft Azure ecosystem — turning messy, distributed data into clean, governed, analytics-ready platforms that power real decisions.</p>
+    <div class="hbtns reveal">
+      <a href="#projects" class="btn primary mag">View My Work →</a>
+      <a href="#contact" class="btn ghost mag">Get in Touch</a>
+      <a href="resume.pdf" download target="_blank" class="btn ghost mag">Download CV ↓</a>
     </div>
-    <div class="hero-cta">
-      <a href="#projects" class="bx fill">VIEW WORK →</a>
-      <a href="#contact" class="bx">GET IN TOUCH</a>
-      <a href="resume.pdf" download target="_blank" class="bx">DOWNLOAD CV ↓</a>
+    <div class="hsoc reveal">
+      <a href="mailto:shanthan811@gmail.com">✉ Email</a>
+      <a href="https://www.linkedin.com/in/shanthan-paladi-2b2bbb203/" target="_blank" rel="noopener">in · LinkedIn</a>
+      <a href="https://github.com/shanthan-paladi" target="_blank" rel="noopener">⌥ GitHub</a>
     </div>
   </div>
 </header>
 
-<div class="marq">
-  <div class="marq-tr">
-    <span>SQL&nbsp;&nbsp;PYTHON&nbsp;&nbsp;PYSPARK&nbsp;&nbsp;AZURE DATA FACTORY&nbsp;&nbsp;MICROSOFT FABRIC&nbsp;&nbsp;DATABRICKS&nbsp;&nbsp;SYNAPSE&nbsp;&nbsp;DELTA LAKE&nbsp;&nbsp;LAKEHOUSE&nbsp;&nbsp;MEDALLION&nbsp;&nbsp;AZURE FUNCTIONS&nbsp;&nbsp;CI/CD</span>
-    <span>SQL&nbsp;&nbsp;PYTHON&nbsp;&nbsp;PYSPARK&nbsp;&nbsp;AZURE DATA FACTORY&nbsp;&nbsp;MICROSOFT FABRIC&nbsp;&nbsp;DATABRICKS&nbsp;&nbsp;SYNAPSE&nbsp;&nbsp;DELTA LAKE&nbsp;&nbsp;LAKEHOUSE&nbsp;&nbsp;MEDALLION&nbsp;&nbsp;AZURE FUNCTIONS&nbsp;&nbsp;CI/CD</span>
-  </div>
-</div>
-
-<section class="sec" id="stats-sec">
-  <div class="wrap">
-    <div class="stats">
-      <div class="stat reveal"><div class="n" data-n="4">4</div><div class="l">Years Exp.</div></div>
-      <div class="stat reveal"><div class="n">1M+</div><div class="l">Rows / Day</div></div>
-      <div class="stat reveal"><div class="n" data-n="80" data-suf="%">80%</div><div class="l">Fewer Errors</div></div>
-      <div class="stat reveal"><div class="n" data-n="6">6</div><div class="l">Projects</div></div>
-    </div>
-  </div>
-</section>
-
-<hr class="rule">
-
 <section class="sec" id="about">
   <div class="wrap">
-    <div class="sh"><span class="no">(01)</span><h2>About</h2><span class="meta">// who is behind the pipelines</span></div>
-    <div class="about-grid">
-      <div class="about-body">
-        <p>I design, build, and maintain scalable data pipelines and ETL/ELT solutions across the Microsoft Azure ecosystem — from ingesting raw data out of SQL Server, MySQL, and file sources through to <b>Gold-layer Lakehouse models</b> that power business intelligence.</p>
-        <p>I've led the modernization of legacy on-premises ETL systems into <b>cloud-native platforms</b>, implemented Medallion (Bronze–Silver–Gold) architectures in Microsoft Fabric, and built pipelines processing over a million records a day — always with data quality, governance, and performance in mind.</p>
-        <p>Currently a Data Engineer at <b>Hashstack Solutions</b> in Hyderabad.</p>
-      </div>
-      <div class="facts">
-        <div class="fact"><div class="ft">Education</div><div class="fc"><span class="it">B.Tech, Electronics &amp; Communication Engineering</span><br>Bharat Institute of Engineering &amp; Technology, Hyderabad · 2022</div></div>
-        <div class="fact"><div class="ft">Disciplines</div><div class="fc">ETL/ELT · Data Warehousing · Data Modelling · Data Governance · Performance Tuning</div></div>
-        <div class="fact"><div class="ft">Ways of working</div><div class="fc">Agile / Scrum · CI/CD · Cross-functional delivery</div></div>
-      </div>
+    <div class="sec-h reveal"><div class="sec-k">About</div><h2 class="sec-t">The engineer behind the pipelines</h2></div>
+    <div class="bento">
+      <div class="tw w-about reveal-f"><div class="card b-about" data-tilt><span class="glare"></span><h3>Azure-native, data-obsessed. <span class="emoji">⚡</span></h3><p>I design, build, and maintain scalable data pipelines and ETL/ELT solutions across the Microsoft Azure ecosystem — from raw data in SQL Server, MySQL, and files through to <b>Gold-layer Lakehouse models</b> powering business intelligence.</p><p>I've led the modernization of legacy on-prem ETL into <b>cloud-native platforms</b>, implemented Medallion architectures in Microsoft Fabric, and built pipelines processing over a million records a day — with data quality, governance, and performance front of mind.</p><p>Currently a Data Engineer at <b>Hashstack Solutions</b> in Hyderabad.</p></div></div>
+      <div class="tw reveal-f"><div class="card b-stat" data-tilt><span class="glare"></span><div class="b-num" data-n="1" data-suf="M+">1M+</div><div class="b-lbl">Records / day</div></div></div>
+      <div class="tw reveal-f"><div class="card b-stat" data-tilt><span class="glare"></span><div class="b-num" data-n="4" data-pre="~">~4</div><div class="b-lbl">Years experience</div></div></div>
+      <div class="tw reveal-f"><div class="card b-stat" data-tilt><span class="glare"></span><div class="b-num" data-n="80" data-suf="%">80%</div><div class="b-lbl">Fewer inconsistencies</div></div></div>
+      <div class="tw reveal-f"><div class="card b-stat" data-tilt><span class="glare"></span><div class="b-num" data-n="6">6</div><div class="b-lbl">Projects delivered</div></div></div>
+      <div class="tw w-wide reveal-f"><div class="card b-edu" data-tilt><span class="glare"></span><div class="b-cap">🎓 Education</div><div class="t">B.Tech — Electronics &amp; Communication Engineering</div><div class="s">Bharat Institute of Engineering &amp; Technology, Hyderabad · 2022</div></div></div>
+      <div class="tw w-wide reveal-f"><div class="card b-focus" data-tilt><span class="glare"></span><div class="b-cap">🎯 Focus Areas</div><div class="chips"><span class="chip">ETL / ELT</span><span class="chip">Lakehouse</span><span class="chip">Data Modelling</span><span class="chip">Governance</span><span class="chip">Performance</span><span class="chip">CI/CD</span></div></div></div>
     </div>
   </div>
 </section>
 
-<hr class="rule">
-
-<section class="sec" id="stack">
+<section class="sec" id="skills">
   <div class="wrap">
-    <div class="sh"><span class="no">(02)</span><h2>Stack</h2><span class="meta">// the tools, daily</span></div>
-    <div class="spec">
-      <div class="spec-row"><div class="spec-cat">Languages</div><div class="spec-items"><span>SQL</span><span>Python</span><span>PySpark</span><span>PL/SQL</span></div></div>
-      <div class="spec-row"><div class="spec-cat">Cloud · Azure</div><div class="spec-items"><span>Data Factory</span><span>Microsoft Fabric</span><span>Synapse</span><span>Databricks</span><span>Azure Functions</span></div></div>
-      <div class="spec-row"><div class="spec-cat">Architecture</div><div class="spec-items"><span>Delta Lake</span><span>Lakehouse</span><span>Medallion</span><span>ETL / ELT</span><span>Data Warehousing</span></div></div>
-      <div class="spec-row"><div class="spec-cat">Databases</div><div class="spec-items"><span>SQL Server</span><span>PostgreSQL</span><span>MySQL</span></div></div>
-      <div class="spec-row"><div class="spec-cat">Big Data</div><div class="spec-items"><span>Apache Spark</span><span>Spark SQL</span><span>Delta Lake</span></div></div>
-      <div class="spec-row"><div class="spec-cat">DevOps</div><div class="spec-items"><span>Azure DevOps</span><span>CI/CD</span><span>Git</span><span>SQL Data Modeler</span></div></div>
+    <div class="sec-h reveal"><div class="sec-k">Stack</div><h2 class="sec-t">Tools I build with 🛠️</h2><p class="sec-s">The technologies I use to architect, build, and operate production-grade Azure data platforms.</p></div>
+    <div class="sk-grid">
+      <div class="tw reveal-f"><div class="card sk" data-tilt><span class="glare"></span><div class="sk-ic"><span class="emoji">🐍</span></div><div class="sk-cat">Languages</div><div class="sk-tg"><span>SQL</span><span>Python</span><span>PySpark</span><span>PL/SQL</span></div></div></div>
+      <div class="tw reveal-f"><div class="card sk" data-tilt><span class="glare"></span><div class="sk-ic"><span class="emoji">☁️</span></div><div class="sk-cat">Cloud · Azure</div><div class="sk-tg"><span>Data Factory</span><span>Fabric</span><span>Synapse</span><span>Databricks</span><span>Functions</span></div></div></div>
+      <div class="tw reveal-f"><div class="card sk" data-tilt><span class="glare"></span><div class="sk-ic"><span class="emoji">🏛️</span></div><div class="sk-cat">Architecture</div><div class="sk-tg"><span>Delta Lake</span><span>Lakehouse</span><span>Medallion</span><span>ETL/ELT</span><span>Warehousing</span></div></div></div>
+      <div class="tw reveal-f"><div class="card sk" data-tilt><span class="glare"></span><div class="sk-ic"><span class="emoji">🗄️</span></div><div class="sk-cat">Databases</div><div class="sk-tg"><span>SQL Server</span><span>PostgreSQL</span><span>MySQL</span></div></div></div>
+      <div class="tw reveal-f"><div class="card sk" data-tilt><span class="glare"></span><div class="sk-ic"><span class="emoji">⚡</span></div><div class="sk-cat">Big Data</div><div class="sk-tg"><span>Apache Spark</span><span>Spark SQL</span><span>Delta Lake</span></div></div></div>
+      <div class="tw reveal-f"><div class="card sk" data-tilt><span class="glare"></span><div class="sk-ic"><span class="emoji">🔧</span></div><div class="sk-cat">DevOps &amp; Tools</div><div class="sk-tg"><span>Azure DevOps</span><span>CI/CD</span><span>Git</span><span>SQL Data Modeler</span></div></div></div>
     </div>
   </div>
 </section>
-
-<hr class="rule">
 
 <section class="sec" id="work">
   <div class="wrap">
-    <div class="sh"><span class="no">(03)</span><h2>Experience</h2><span class="meta">// where I've built things</span></div>
-    <div class="xp">
+    <div class="sec-h reveal"><div class="sec-k">Experience</div><h2 class="sec-t">Where I've built things 💼</h2></div>
+    <div class="tw reveal-f"><div class="card xp" data-tilt><span class="glare"></span>
+      <div class="lft"><div class="d">SEP 2022 — PRESENT</div><div class="co">Hashstack Solutions Pvt. Ltd.<br>(formerly Zitisi Solutions LLP)<br>Hyderabad, India</div></div>
       <div>
-        <div class="xp-date">SEP 2022 — PRESENT</div>
-        <div class="xp-co">Hashstack Solutions Pvt. Ltd.<br>(formerly Zitisi Solutions LLP)<br>Hyderabad</div>
-      </div>
-      <div>
-        <div class="xp-role">Data Engineer</div>
+        <div class="role">Data Engineer</div>
         <ul>
-          <li>Led modernization of a legacy ETL ecosystem, migrating on-premises C# and SQL Server workflows into a cloud-native platform on Azure Data Factory and Microsoft Fabric.</li>
-          <li>Designed and implemented Medallion Architecture (Bronze, Silver, Gold) in the Fabric Lakehouse for governed, performance-optimized data flows.</li>
-          <li>Built ADF + PySpark pipelines in Databricks processing 1M+ records daily with reusable, high-performance transformations.</li>
-          <li>Developed SQL stored procedures and reusable views, reducing data inconsistencies by up to 80% and delivering analytics-ready data to BI teams.</li>
-          <li>Built custom Azure Functions automating file extraction from emails into Blob Storage; integrated REST API and ODBC sources.</li>
-          <li>Implemented Azure DevOps CI/CD pipelines for automated, reliable deployments under Agile delivery.</li>
+          <li>Led modernization of a legacy ETL ecosystem, migrating on-premises C# and SQL Server workflows into a <b>cloud-native platform</b> on Azure Data Factory and Microsoft Fabric.</li>
+          <li>Designed and implemented <b>Medallion Architecture</b> (Bronze, Silver, Gold) in the Fabric Lakehouse for governed, performance-optimized data flows.</li>
+          <li>Built ADF + PySpark pipelines in Databricks processing <b>1M+ records daily</b> with reusable, high-performance transformations.</li>
+          <li>Developed SQL stored procedures and reusable views, reducing data inconsistencies by <b>up to 80%</b> and delivering analytics-ready data to BI teams.</li>
+          <li>Built custom <b>Azure Functions</b> automating file extraction from emails into Blob Storage; integrated REST API and ODBC sources.</li>
+          <li>Implemented <b>Azure DevOps CI/CD</b> pipelines for automated, reliable deployments under Agile delivery.</li>
         </ul>
       </div>
-    </div>
+    </div></div>
   </div>
 </section>
-
-<hr class="rule">
 
 <section class="sec" id="projects">
   <div class="wrap">
-    <div class="sh"><span class="no">(04)</span><h2>Projects</h2><span class="meta">// work that ships &amp; scales</span></div>
-    <div class="proj">
-      <div class="pno">P-01</div>
-      <div><div class="pt">Enterprise Data Platform Modernization</div><div class="pd">Migrated a legacy on-prem C#/SQL Server ETL ecosystem to a cloud-native platform. Built Medallion Lakehouse architecture, REST/ODBC ingestion, and custom Azure Functions for automated file ingestion.</div><div class="ptags"><em>ADF</em><em>Microsoft Fabric</em><em>Lakehouse</em><em>Azure Functions</em></div></div>
-      <div class="pm">Legacy → cloud-native</div>
-    </div>
-    <div class="proj">
-      <div class="pno">P-02</div>
-      <div><div class="pt">Databricks ETL for CRM/ERP Platform</div><div class="pd">Designed scalable ETL pipelines with ADF and PySpark in Databricks to ingest and transform data into a CRM environment, with CI/CD-driven deployments.</div><div class="ptags"><em>Databricks</em><em>PySpark</em><em>ADF</em><em>Azure DevOps</em></div></div>
-      <div class="pm">1M+ rows / day</div>
-    </div>
-    <div class="proj">
-      <div class="pno">P-03</div>
-      <div><div class="pt">Data Warehousing on Azure Synapse</div><div class="pd">Built robust pipelines and dedicated SQL Pool stored procedures in Azure Synapse Analytics, streamlining data movement and transformation.</div><div class="ptags"><em>Synapse</em><em>Azure SQL</em><em>Stored Procedures</em></div></div>
-      <div class="pm">80% fewer inconsistencies</div>
-    </div>
-    <div class="proj">
-      <div class="pno">P-04</div>
-      <div><div class="pt">Enterprise Data Platform — Fabric &amp; CRM</div><div class="pd">Developed ETL in Microsoft Fabric using the Fabric Link plugin to ingest CRM, Finance &amp; Operations data into the Lakehouse, with aggregate tables and procedures improving data quality.</div><div class="ptags"><em>Microsoft Fabric</em><em>Fabric Link</em><em>PySpark</em><em>Lakehouse</em></div></div>
-      <div class="pm">Better data quality</div>
-    </div>
-    <div class="proj">
-      <div class="pno">P-05</div>
-      <div><div class="pt">Desktop Billing Application</div><div class="pd">Built an interactive billing app in Python (Tkinter) with a PostgreSQL backend — automated PDF generation and messaging workflows, multithreading, and CSV export.</div><div class="ptags"><em>Python</em><em>Tkinter</em><em>PostgreSQL</em></div></div>
-      <div class="pm">Automated billing</div>
-    </div>
-    <div class="proj">
-      <div class="pno">P-06</div>
-      <div><div class="pt">HRMS — Cloud Database Migration</div><div class="pd">Migrated legacy databases to cloud PostgreSQL; built API-supportive views, procedures and functions, and designed an ER model with index-based query optimization.</div><div class="ptags"><em>PostgreSQL</em><em>SQL Data Modeler</em><em>Data Modelling</em></div></div>
-      <div class="pm">Reliability + scale</div>
+    <div class="sec-h reveal"><div class="sec-k">Projects</div><h2 class="sec-t">Work that ships &amp; scales 🚀</h2><p class="sec-s">A selection of data engineering work spanning cloud modernization, Lakehouse architecture, and automation.</p></div>
+    <div class="pj-grid">
+      <div class="tw reveal-f"><div class="card pj" data-tilt><span class="glare"></span><div class="pj-top"><div class="pj-ic"><span class="emoji">🏗️</span></div><div class="pj-no">P-01</div></div><div class="pj-t">Enterprise Data Platform Modernization</div><div class="pj-d">Migrated a legacy on-prem C#/SQL Server ETL ecosystem to a cloud-native platform. Built Medallion Lakehouse architecture, REST/ODBC ingestion, and custom Azure Functions for automated file ingestion.</div><div class="pj-tg"><span>ADF</span><span>Fabric</span><span>Lakehouse</span><span>Functions</span></div><div class="pj-m">Legacy → cloud-native, governed platform</div></div></div>
+      <div class="tw reveal-f"><div class="card pj" data-tilt><span class="glare"></span><div class="pj-top"><div class="pj-ic"><span class="emoji">⚙️</span></div><div class="pj-no">P-02</div></div><div class="pj-t">Databricks ETL for CRM/ERP Platform</div><div class="pj-d">Designed scalable ETL pipelines with ADF and PySpark in Databricks to ingest and transform data into a CRM environment, with CI/CD-driven deployments.</div><div class="pj-tg"><span>Databricks</span><span>PySpark</span><span>ADF</span><span>DevOps</span></div><div class="pj-m">1M+ records processed daily</div></div></div>
+      <div class="tw reveal-f"><div class="card pj" data-tilt><span class="glare"></span><div class="pj-top"><div class="pj-ic"><span class="emoji">📊</span></div><div class="pj-no">P-03</div></div><div class="pj-t">Data Warehousing on Azure Synapse</div><div class="pj-d">Built robust pipelines and dedicated SQL Pool stored procedures in Azure Synapse Analytics, streamlining data movement and transformation.</div><div class="pj-tg"><span>Synapse</span><span>Azure SQL</span><span>Procedures</span></div><div class="pj-m">Up to 80% fewer inconsistencies</div></div></div>
+      <div class="tw reveal-f"><div class="card pj" data-tilt><span class="glare"></span><div class="pj-top"><div class="pj-ic"><span class="emoji">🔗</span></div><div class="pj-no">P-04</div></div><div class="pj-t">Enterprise Data Platform — Fabric &amp; CRM</div><div class="pj-d">Developed ETL in Microsoft Fabric using the Fabric Link plugin to ingest CRM, Finance &amp; Operations data into the Lakehouse, with aggregate tables and procedures improving data quality.</div><div class="pj-tg"><span>Fabric</span><span>Fabric Link</span><span>PySpark</span><span>Lakehouse</span></div><div class="pj-m">Improved data quality &amp; reporting</div></div></div>
+      <div class="tw reveal-f"><div class="card pj" data-tilt><span class="glare"></span><div class="pj-top"><div class="pj-ic"><span class="emoji">🧾</span></div><div class="pj-no">P-05</div></div><div class="pj-t">Desktop Billing Application</div><div class="pj-d">Built an interactive billing app in Python (Tkinter) with a PostgreSQL backend — automated PDF generation and messaging workflows, multithreading, and CSV export.</div><div class="pj-tg"><span>Python</span><span>Tkinter</span><span>PostgreSQL</span></div><div class="pj-m">Automated billing workflows</div></div></div>
+      <div class="tw reveal-f"><div class="card pj" data-tilt><span class="glare"></span><div class="pj-top"><div class="pj-ic"><span class="emoji">🗃️</span></div><div class="pj-no">P-06</div></div><div class="pj-t">HRMS — Cloud Database Migration</div><div class="pj-d">Migrated legacy databases to cloud PostgreSQL; built API-supportive views, procedures and functions, and designed an ER model with index-based query optimization.</div><div class="pj-tg"><span>PostgreSQL</span><span>SQL Data Modeler</span><span>Modelling</span></div><div class="pj-m">Improved reliability &amp; scalability</div></div></div>
     </div>
   </div>
 </section>
-
-<hr class="rule">
-
-<section class="sec" id="impact">
-  <div class="wrap">
-    <div class="sh"><span class="no">(05)</span><h2>Impact</h2><span class="meta">// outcomes, not adjectives</span></div>
-    <div class="imp">
-      <div class="imp-i"><div class="ic">[01]</div><p>Reduced data inconsistencies by up to <b>80%</b> via stored-procedure-driven cleansing and validation.</p></div>
-      <div class="imp-i"><div class="ic">[02]</div><p>Built pipelines processing <b>1M+ records daily</b> with reusable PySpark transformations in Databricks.</p></div>
-      <div class="imp-i"><div class="ic">[03]</div><p>Implemented <b>Medallion Architecture</b> (Bronze→Silver→Gold) in the Microsoft Fabric Lakehouse.</p></div>
-      <div class="imp-i"><div class="ic">[04]</div><p>Led <b>end-to-end modernization</b> of a legacy on-prem ETL ecosystem to cloud-native Azure.</p></div>
-      <div class="imp-i"><div class="ic">[05]</div><p>Automated file ingestion with custom <b>Azure Functions</b> and REST/ODBC integrations.</p></div>
-      <div class="imp-i"><div class="ic">[06]</div><p>Stood up <b>Azure DevOps CI/CD</b> for automated, reliable deployments under Agile delivery.</p></div>
-    </div>
-  </div>
-</section>
-
-<hr class="rule">
 
 <section class="sec" id="contact">
   <div class="wrap">
-    <div class="sh"><span class="no">(06)</span><h2>Contact</h2><span class="meta">// let's talk data</span></div>
-    <div class="contact-big">Let's build something <span class="it">scalable.</span></div>
-    <div class="clinks">
-      <a class="clink" href="mailto:shanthan811@gmail.com"><span class="cl-k">Email</span><span class="cl-v">shanthan811@gmail.com</span><span class="cl-ar">↗</span></a>
-      <a class="clink" href="https://www.linkedin.com/in/shanthan-paladi-2b2bbb203/" target="_blank" rel="noopener"><span class="cl-k">LinkedIn</span><span class="cl-v">Paladi Shanthan Kumar</span><span class="cl-ar">↗</span></a>
-      <a class="clink" href="https://github.com/shanthan-paladi" target="_blank" rel="noopener"><span class="cl-k">GitHub</span><span class="cl-v">github.com/shanthan-paladi</span><span class="cl-ar">↗</span></a>
-      <a class="clink" href="resume.pdf" download target="_blank"><span class="cl-k">Resume</span><span class="cl-v">Download PDF</span><span class="cl-ar">↓</span></a>
-    </div>
+    <div class="tw reveal-f"><div class="card ct" data-tilt><span class="glare"></span>
+      <h2>Let's build something <span class="g">scalable.</span> ✨</h2>
+      <p>Open to Data Engineering opportunities. The fastest way to reach me is email — I read everything.</p>
+      <div class="ct-btns">
+        <a href="mailto:shanthan811@gmail.com" class="btn primary mag">✉ shanthan811@gmail.com</a>
+        <a href="https://www.linkedin.com/in/shanthan-paladi-2b2bbb203/" target="_blank" rel="noopener" class="btn ghost mag">LinkedIn</a>
+        <a href="https://github.com/shanthan-paladi" target="_blank" rel="noopener" class="btn ghost mag">GitHub</a>
+      </div>
+    </div></div>
   </div>
 </section>
 
 <footer>
-  <div class="wrap" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem;width:100%">
-    <span>© 2026 PALADI SHANTHAN KUMAR</span>
-    <span>HYDERABAD, IN <b>//</b> DATA ENGINEER</span>
+  <div class="wrap foot">
+    <span>© 2026 Paladi Shanthan Kumar</span>
+    <span>Hyderabad, IN <b>//</b> Data Engineer</span>
   </div>
 </footer>
 
@@ -398,25 +326,78 @@ footer span b{color:var(--accent)}
   var html=document.documentElement;
   function gs(){try{return localStorage.getItem('psk-th');}catch(e){return null;}}
   function ss(v){try{localStorage.setItem('psk-th',v);}catch(e){}}
-  var saved=gs()||(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
+  var saved=gs()||(window.matchMedia('(prefers-color-scheme:light)').matches?'light':'dark');
   html.setAttribute('data-theme',saved);
-  function setLbl(t){var b=document.getElementById('tg');if(b)b.textContent=t==='dark'?'[ LIGHT ]':'[ DARK ]';}
-  setLbl(saved);
-  var tg=document.getElementById('tg');
-  if(tg)tg.addEventListener('click',function(){var n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);ss(n);setLbl(n);});
+  var tt=document.getElementById('tt');
+  function lbl(t){if(tt)tt.textContent=t==='dark'?'🌙':'☀️';}
+  lbl(saved);
+  if(tt)tt.addEventListener('click',function(){var n=html.getAttribute('data-theme')==='dark'?'light':'dark';html.setAttribute('data-theme',n);ss(n);lbl(n);});
 
   var burger=document.getElementById('burger'),mmenu=document.getElementById('mmenu');
   function tog(){var o=mmenu.classList.toggle('open');burger.classList.toggle('open',o);document.body.style.overflow=o?'hidden':'';}
   if(burger)burger.addEventListener('click',tog);
   document.querySelectorAll('.mmenu a').forEach(function(a){a.addEventListener('click',function(){mmenu.classList.remove('open');burger.classList.remove('open');document.body.style.overflow='';});});
 
-  document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=document.querySelector(this.getAttribute('href'));if(!t)return;e.preventDefault();var h=(document.querySelector('nav')||{}).offsetHeight||62;window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-h-6,behavior:'smooth'});});});
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=document.querySelector(this.getAttribute('href'));if(!t)return;e.preventDefault();window.scrollTo({top:t.getBoundingClientRect().top+window.scrollY-90,behavior:'smooth'});});});
 
+  // scroll progress
+  var prog=document.getElementById('prog');
+  function onScroll(){var h=document.documentElement,sc=h.scrollTop||document.body.scrollTop,mx=h.scrollHeight-h.clientHeight;prog.style.width=(mx>0?(sc/mx*100):0)+'%';}
+  window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+  var fine=window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+  var reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  // blobs parallax
+  if(fine&&!reduce){
+    var bl=document.querySelectorAll('.blobs i');
+    window.addEventListener('mousemove',function(e){
+      var x=(e.clientX/window.innerWidth-.5),y=(e.clientY/window.innerHeight-.5);
+      bl.forEach(function(b,i){var f=(i+1)*16;b.style.transform='translate('+(x*f)+'px,'+(y*f)+'px)';});
+    });
+  }
+
+  // custom cursor
+  if(fine){
+    var cur=document.getElementById('cur'),curd=document.getElementById('curd');
+    var tx=0,ty=0,cx=0,cy=0;
+    window.addEventListener('mousemove',function(e){tx=e.clientX;ty=e.clientY;curd.style.transform='translate('+tx+'px,'+ty+'px) translate(-50%,-50%)';});
+    (function loop(){cx+=(tx-cx)*.18;cy+=(ty-cy)*.18;cur.style.transform='translate('+cx+'px,'+cy+'px) translate(-50%,-50%)';requestAnimationFrame(loop);})();
+    document.querySelectorAll('a,button,[data-tilt]').forEach(function(el){el.addEventListener('mouseenter',function(){cur.classList.add('big');});el.addEventListener('mouseleave',function(){cur.classList.remove('big');});});
+  }
+
+  // 3D tilt + glare
+  if(fine&&!reduce){
+    document.querySelectorAll('[data-tilt]').forEach(function(card){
+      card.addEventListener('mousemove',function(e){
+        var r=card.getBoundingClientRect(),px=(e.clientX-r.left)/r.width,py=(e.clientY-r.top)/r.height;
+        var rx=(.5-py)*9,ry=(px-.5)*9;
+        card.style.transform='perspective(900px) rotateX('+rx+'deg) rotateY('+ry+'deg) translateZ(0)';
+        card.style.setProperty('--gx',(px*100)+'%');card.style.setProperty('--gy',(py*100)+'%');
+      });
+      card.addEventListener('mouseleave',function(){card.style.transform='';});
+    });
+  }
+
+  // magnetic buttons
+  if(fine&&!reduce){
+    document.querySelectorAll('.mag').forEach(function(b){
+      b.addEventListener('mousemove',function(e){var r=b.getBoundingClientRect();var x=e.clientX-r.left-r.width/2,y=e.clientY-r.top-r.height/2;b.style.transform='translate('+(x*.25)+'px,'+(y*.35)+'px)';});
+      b.addEventListener('mouseleave',function(){b.style.transform='';});
+    });
+  }
+
+  // reveals + counters
   if('IntersectionObserver'in window){
-    var rv=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');rv.unobserve(e.target);}});},{threshold:.15});
-    document.querySelectorAll('.reveal').forEach(function(el){rv.observe(el);});
-    var sc=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var el=e.target.querySelector('.n[data-n]');if(el&&!el.dataset.done){el.dataset.done='1';var fin=+el.dataset.n,suf=el.dataset.suf||'',s0=null;function st(ts){if(!s0)s0=ts;var p=Math.min((ts-s0)/1100,1),ez=1-Math.pow(1-p,3);el.textContent=Math.round(ez*fin)+suf;if(p<1)requestAnimationFrame(st);}requestAnimationFrame(st);}});},{threshold:.5});
-    document.querySelectorAll('.stat').forEach(function(el){sc.observe(el);});
+    var rv=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){setTimeout(function(){e.target.classList.add('in');},e.target.dataset.d?+e.target.dataset.d:0);rv.unobserve(e.target);}});},{threshold:.12});
+    document.querySelectorAll('.reveal,.reveal-f').forEach(function(el,i){el.dataset.d=(i%6)*55;rv.observe(el);});
+
+    var nLinks=document.querySelectorAll('.nav-links a'),nSecs=Array.from(nLinks).map(function(a){return document.querySelector(a.getAttribute('href'));}).filter(Boolean);
+    var no=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){var id='#'+e.target.id;nLinks.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')===id);});}});},{rootMargin:'-45% 0px -50% 0px'});
+    nSecs.forEach(function(s){no.observe(s);});
+
+    var sc=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;var el=e.target.querySelector('.b-num[data-n]');if(el&&!el.dataset.done){el.dataset.done='1';var fin=+el.dataset.n,suf=el.dataset.suf||'',pre=el.dataset.pre||'',s0=null;function st(ts){if(!s0)s0=ts;var p=Math.min((ts-s0)/1200,1),ez=1-Math.pow(1-p,3);el.textContent=pre+Math.round(ez*fin)+suf;if(p<1)requestAnimationFrame(st);}requestAnimationFrame(st);}});},{threshold:.5});
+    document.querySelectorAll('.b-stat').forEach(function(el){sc.observe(el);});
   }
 })();
 </script>
