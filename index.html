@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Paladi Shanthan Kumar — Data Engineer</title>
+<meta name="description" content="Data Engineer specialising in scalable ETL pipelines on Microsoft Azure, Fabric, Databricks and PySpark." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --bg:#0a0e12;
+    --bg-soft:#10161c;
+    --panel:#121a21;
+    --line:#1f2a33;
+    --ink:#e7eef3;
+    --muted:#8a9ba8;
+    --faint:#5d6f7c;
+    --accent:#34e0c4;
+    --accent-dim:#1c8f7e;
+    --glow:rgba(52,224,196,.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans',sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* blueprint grid + glow backdrop */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-2;
+    background-image:
+      linear-gradient(var(--line) 1px,transparent 1px),
+      linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:54px 54px;
+    opacity:.25;
+    mask-image:radial-gradient(circle at 50% 0%,#000 0%,transparent 70%);
+  }
+  body::after{
+    content:"";position:fixed;top:-20%;left:50%;transform:translateX(-50%);
+    width:80vw;height:60vh;z-index:-1;
+    background:radial-gradient(circle,var(--glow),transparent 60%);
+    filter:blur(40px);pointer-events:none;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+
+  /* nav */
+  nav{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(12px);
+    background:rgba(10,14,18,.7);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}
+  .logo{font-family:'IBM Plex Mono',monospace;font-size:.9rem;letter-spacing:.05em;color:var(--accent)}
+  .logo span{color:var(--faint)}
+  .nav-links{display:flex;gap:26px;font-size:.85rem;font-family:'IBM Plex Mono',monospace}
+  .nav-links a{color:var(--muted);transition:color .2s}
+  .nav-links a:hover{color:var(--accent)}
+  @media(max-width:640px){.nav-links{display:none}}
+
+  /* hero */
+  header{padding:120px 0 90px;position:relative}
+  .eyebrow{
+    font-family:'IBM Plex Mono',monospace;font-size:.8rem;color:var(--accent);
+    letter-spacing:.18em;text-transform:uppercase;margin-bottom:22px;
+    display:inline-flex;align-items:center;gap:10px;
+  }
+  .eyebrow::before{content:"";width:32px;height:1px;background:var(--accent)}
+  h1{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:800;line-height:.98;letter-spacing:-.02em;
+    font-size:clamp(2.8rem,8vw,5.6rem);margin-bottom:24px;
+  }
+  h1 em{font-style:normal;color:var(--accent)}
+  .lede{font-size:clamp(1.05rem,2.4vw,1.3rem);color:var(--muted);max-width:620px;margin-bottom:38px}
+  .lede b{color:var(--ink);font-weight:600}
+  .cta{display:flex;flex-wrap:wrap;gap:14px}
+  .btn{
+    font-family:'IBM Plex Mono',monospace;font-size:.85rem;
+    padding:13px 22px;border-radius:8px;border:1px solid var(--line);
+    color:var(--ink);transition:all .22s;display:inline-flex;align-items:center;gap:9px;
+  }
+  .btn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+  .btn.primary{background:var(--accent);color:#04130f;border-color:var(--accent);font-weight:500}
+  .btn.primary:hover{background:#5cf0d6;color:#04130f;box-shadow:0 8px 28px var(--glow)}
+
+  /* sections */
+  section{padding:78px 0;border-top:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:48px}
+  .sec-num{font-family:'IBM Plex Mono',monospace;color:var(--accent-dim);font-size:.85rem}
+  .sec-title{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:clamp(1.7rem,4vw,2.4rem);letter-spacing:-.01em}
+
+  .about-grid{display:grid;grid-template-columns:1fr;gap:30px}
+  .about p{color:var(--muted);font-size:1.05rem;margin-bottom:18px}
+  .about p b{color:var(--ink);font-weight:600}
+  .stats{display:flex;gap:38px;flex-wrap:wrap;margin-top:14px}
+  .stat .n{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:2.2rem;color:var(--accent)}
+  .stat .l{font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--faint);text-transform:uppercase;letter-spacing:.1em}
+
+  /* skills */
+  .skill-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+  .skill-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;transition:border-color .22s,transform .22s}
+  .skill-card:hover{border-color:var(--accent-dim);transform:translateY(-3px)}
+  .skill-card h3{font-family:'IBM Plex Mono',monospace;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:14px}
+  .tags{display:flex;flex-wrap:wrap;gap:8px}
+  .tag{font-size:.82rem;color:var(--muted);background:var(--bg-soft);border:1px solid var(--line);padding:5px 11px;border-radius:6px;transition:color .2s,border-color .2s}
+  .skill-card:hover .tag{color:var(--ink)}
+
+  /* experience */
+  .xp{display:flex;gap:24px;padding:26px;background:var(--panel);border:1px solid var(--line);border-radius:14px;position:relative}
+  .xp .dot{flex:none;width:11px;height:11px;border-radius:50%;background:var(--accent);margin-top:8px;box-shadow:0 0 0 5px var(--glow)}
+  .xp .role{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:1.35rem}
+  .xp .meta{font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:var(--faint);margin:4px 0 16px}
+  .xp ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+  .xp li{color:var(--muted);padding-left:20px;position:relative;font-size:.97rem}
+  .xp li::before{content:"▸";position:absolute;left:0;color:var(--accent-dim)}
+  .xp li b{color:var(--ink);font-weight:600}
+
+  /* projects */
+  .proj-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+  .proj{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px;display:flex;flex-direction:column;transition:border-color .22s,transform .22s;position:relative;overflow:hidden}
+  .proj::after{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent),transparent);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+  .proj:hover{border-color:var(--accent-dim);transform:translateY(-4px)}
+  .proj:hover::after{transform:scaleX(1)}
+  .proj .idx{font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--accent-dim);margin-bottom:12px}
+  .proj h3{font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:1.2rem;margin-bottom:10px;line-height:1.25}
+  .proj p{color:var(--muted);font-size:.93rem;flex:1;margin-bottom:16px}
+  .proj .stack{display:flex;flex-wrap:wrap;gap:7px}
+  .proj .stack span{font-family:'IBM Plex Mono',monospace;font-size:.72rem;color:var(--faint);border:1px solid var(--line);padding:3px 8px;border-radius:5px}
+
+  /* contact */
+  .contact-box{text-align:center;padding:30px 0 10px}
+  .contact-box h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2rem,6vw,3.6rem);letter-spacing:-.02em;margin-bottom:18px}
+  .contact-box h2 em{font-style:normal;color:var(--accent)}
+  .contact-box p{color:var(--muted);max-width:480px;margin:0 auto 32px}
+
+  footer{border-top:1px solid var(--line);padding:30px 0;text-align:center}
+  footer p{font-family:'IBM Plex Mono',monospace;font-size:.78rem;color:var(--faint)}
+
+  /* reveal animation */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  header .reveal{transition-delay:calc(var(--d,0)*90ms)}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-inner">
+    <a href="#top" class="logo">PSK<span>::data_engineer</span></a>
+    <div class="nav-links">
+      <a href="#about">about</a>
+      <a href="#skills">skills</a>
+      <a href="#experience">experience</a>
+      <a href="#projects">projects</a>
+      <a href="#contact">contact</a>
+    </div>
+  </div>
+</nav>
+
+<header id="top">
+  <div class="wrap">
+    <div class="eyebrow reveal" style="--d:0">Data Engineer · Hyderabad, India</div>
+    <h1 class="reveal" style="--d:1">Paladi Shanthan Kumar<br><em>builds data that scales.</em></h1>
+    <p class="lede reveal" style="--d:2">Data Engineer with nearly <b>4 years</b> designing scalable ETL/ELT pipelines across the <b>Microsoft Azure</b> ecosystem — turning messy, distributed data into clean, governed, analytics-ready platforms.</p>
+    <div class="cta reveal" style="--d:3">
+      <a class="btn primary" href="mailto:shanthan811@gmail.com">→ Get in touch</a>
+      <a class="btn" href="https://github.com/shanthan-paladi" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="https://www.linkedin.com/in/shanthan-paladi-2b2bbb203/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="resume.pdf" target="_blank" rel="noopener">Résumé ↓</a>
+    </div>
+  </div>
+</header>
+
+<section id="about" class="about">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">01</span><span class="sec-title">About</span></div>
+    <div class="about-grid reveal">
+      <div>
+        <p>I design, build, and maintain <b>scalable data pipelines</b> and ETL/ELT solutions, with deep hands-on work in <b>Azure Data Factory, Microsoft Fabric, Databricks, PySpark, and Synapse Analytics</b>.</p>
+        <p>I've led the modernization of legacy on-premises ETL systems into cloud-native platforms, implemented <b>Medallion (Bronze–Silver–Gold) Lakehouse architectures</b>, and built pipelines processing over a million records a day — always with data quality, governance, and performance in mind.</p>
+        <p>I like the part of the job where reliable data quietly powers better business decisions.</p>
+        <div class="stats">
+          <div class="stat"><div class="n">~4</div><div class="l">Years experience</div></div>
+          <div class="stat"><div class="n">1M+</div><div class="l">Records / day</div></div>
+          <div class="stat"><div class="n">80%</div><div class="l">Fewer inconsistencies</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">02</span><span class="sec-title">Skills &amp; Stack</span></div>
+    <div class="skill-grid">
+      <div class="skill-card reveal"><h3>Languages</h3><div class="tags"><span class="tag">SQL</span><span class="tag">Python</span><span class="tag">PySpark</span><span class="tag">PL/SQL</span></div></div>
+      <div class="skill-card reveal"><h3>Cloud · Azure</h3><div class="tags"><span class="tag">Data Factory</span><span class="tag">Microsoft Fabric</span><span class="tag">Synapse</span><span class="tag">Databricks</span><span class="tag">Azure Functions</span></div></div>
+      <div class="skill-card reveal"><h3>Big Data</h3><div class="tags"><span class="tag">Apache Spark</span><span class="tag">Delta Lake</span><span class="tag">Lakehouse</span><span class="tag">Medallion</span></div></div>
+      <div class="skill-card reveal"><h3>Databases</h3><div class="tags"><span class="tag">SQL Server</span><span class="tag">PostgreSQL</span><span class="tag">MySQL</span></div></div>
+      <div class="skill-card reveal"><h3>DevOps &amp; Tools</h3><div class="tags"><span class="tag">Azure DevOps</span><span class="tag">CI/CD</span><span class="tag">Git</span></div></div>
+      <div class="skill-card reveal"><h3>Concepts</h3><div class="tags"><span class="tag">ETL / ELT</span><span class="tag">Data Warehousing</span><span class="tag">Data Modelling</span><span class="tag">Data Governance</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">03</span><span class="sec-title">Experience</span></div>
+    <div class="xp reveal">
+      <div class="dot"></div>
+      <div>
+        <div class="role">Data Engineer</div>
+        <div class="meta">Hashstack Solutions Pvt. Ltd. (formerly Zitisi Solutions LLP) · Sep 2022 – Present · Hyderabad</div>
+        <ul>
+          <li>Led modernization of a legacy ETL ecosystem, migrating on-premises C# and SQL Server workflows into a cloud-native platform on <b>Azure Data Factory</b> and <b>Microsoft Fabric</b>.</li>
+          <li>Designed and implemented <b>Medallion Architecture</b> (Bronze, Silver, Gold) in the Fabric Lakehouse for governed, performance-optimized data flows.</li>
+          <li>Built <b>ADF + PySpark</b> pipelines in <b>Databricks</b> processing <b>1M+ records daily</b> with reusable, high-performance transformations.</li>
+          <li>Developed SQL stored procedures and reusable views, reducing data inconsistencies by <b>up to 80%</b> and delivering analytics-ready data to BI teams.</li>
+          <li>Implemented <b>Azure DevOps CI/CD</b> pipelines for automated, reliable deployments under Agile delivery.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head reveal"><span class="sec-num">04</span><span class="sec-title">Projects</span></div>
+    <div class="proj-grid">
+      <article class="proj reveal">
+        <div class="idx">P-01</div>
+        <h3>Enterprise Data Platform Modernization</h3>
+        <p>Migrated a legacy on-prem C#/SQL Server ETL ecosystem to a cloud-native platform. Built Medallion Lakehouse architecture, REST/ODBC ingestion, and custom Azure Functions for automated file ingestion.</p>
+        <div class="stack"><span>ADF</span><span>Microsoft Fabric</span><span>Lakehouse</span><span>Azure Functions</span></div>
+      </article>
+      <article class="proj reveal">
+        <div class="idx">P-02</div>
+        <h3>Databricks ETL for CRM/ERP Platform</h3>
+        <p>Designed scalable ETL pipelines with ADF and PySpark in Databricks to ingest and transform 1M+ records daily into a CRM environment, with CI/CD-driven deployments.</p>
+        <div class="stack"><span>Databricks</span><span>PySpark</span><span>ADF</span><span>Azure DevOps</span></div>
+      </article>
+      <article class="proj reveal">
+        <div class="idx">P-03</div>
+        <h3>Data Warehousing on Azure Synapse</h3>
+        <p>Built robust pipelines and dedicated SQL Pool stored procedures in Azure Synapse Analytics, reducing data inconsistencies by up to 80% and streamlining data movement.</p>
+        <div class="stack"><span>Synapse</span><span>Azure SQL</span><span>Stored Procedures</span></div>
+      </article>
+      <article class="proj reveal">
+        <div class="idx">P-04</div>
+        <h3>Enterprise Data Platform — Fabric &amp; CRM</h3>
+        <p>Developed ETL in Microsoft Fabric using the Fabric Link plugin to ingest CRM, Finance &amp; Operations data into the Lakehouse, with aggregate tables and procedures improving data quality.</p>
+        <div class="stack"><span>Microsoft Fabric</span><span>Fabric Link</span><span>PySpark</span><span>Lakehouse</span></div>
+      </article>
+      <article class="proj reveal">
+        <div class="idx">P-05</div>
+        <h3>Desktop Billing Application</h3>
+        <p>Built an interactive billing app in Python (Tkinter) with a PostgreSQL backend — automated PDF generation and messaging workflows, multithreading, and CSV export.</p>
+        <div class="stack"><span>Python</span><span>Tkinter</span><span>PostgreSQL</span></div>
+      </article>
+      <article class="proj reveal">
+        <div class="idx">P-06</div>
+        <h3>HRMS — Cloud Database Migration</h3>
+        <p>Migrated legacy databases to cloud PostgreSQL; built API-supportive views, procedures and functions, and designed an ER model with index-based query optimization.</p>
+        <div class="stack"><span>PostgreSQL</span><span>SQL Data Modeler</span><span>Data Modelling</span></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap contact-box reveal">
+    <h2>Let's build something <em>scalable.</em></h2>
+    <p>Open to opportunities in Data Engineering. The fastest way to reach me is email — I read everything.</p>
+    <div class="cta" style="justify-content:center">
+      <a class="btn primary" href="mailto:shanthan811@gmail.com">→ shanthan811@gmail.com</a>
+      <a class="btn" href="https://www.linkedin.com/in/shanthan-paladi-2b2bbb203/" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn" href="https://github.com/shanthan-paladi" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap"><p>© 2026 Paladi Shanthan Kumar · Built with curiosity &amp; clean data.</p></div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  // hero reveals on load
+  window.addEventListener('load',()=>{
+    document.querySelectorAll('header .reveal').forEach(el=>el.classList.add('in'));
+  });
+</script>
+</body>
+</html>
